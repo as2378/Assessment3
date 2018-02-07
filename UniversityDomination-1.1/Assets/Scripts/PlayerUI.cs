@@ -39,7 +39,8 @@ public class PlayerUI : MonoBehaviour {
 
 	public void UpdateDisplay() {
 
-		percentOwned.text = Mathf.Round(100 * player.ownedSectors.Count / numberOfSectors).ToString() + "%";
+ 		percentOwned.text = Mathf.Round(100 * player.ownedSectors.Count / numberOfSectors).ToString() + "%";
+ //     percentOwned.text = player.ownedSectors.Count + "/" + numberOfSectors;
 		beer.text = player.GetBeer().ToString();
 		knowledge.text = player.GetKnowledge().ToString();
 
