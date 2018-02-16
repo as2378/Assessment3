@@ -4,11 +4,28 @@ using UnityEngine;
 
 public class Landmark : MonoBehaviour {
 
-    public enum ResourceType {Beer, Knowledge};
-	[SerializeField] private ResourceType resourceType;
+    public enum ResourceType {Beer, Knowledge
+        //===================code by charlie===================
+        ,ViceChancellor //used to represent whether this landmark is the vice chancellor
+    };
+
+    public void viceChanceIsClicked()
+    {
+        if (GetComponentInParent<Sector>().GetOwner() != null)
+        {
+            if (GetComponentInParent<Sector>().GetOwner().IsActive() /*&& GetComponentInParent<Sector>().AdjacentSelectedUnit() != null*/)
+            {
+
+                //start minigame
+                Debug.Log("aayyyyy");
+            }
+        }
+    }
+    //=======================================
+
+    [SerializeField] private ResourceType resourceType;
     [SerializeField] private int amount = 2;
 
-    
     public ResourceType GetResourceType() {
         return resourceType;
     }

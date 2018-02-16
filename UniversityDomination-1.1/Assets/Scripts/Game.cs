@@ -8,10 +8,15 @@ public class Game : MonoBehaviour {
 	public GameObject gameMap;
     public Player currentPlayer;
 
+    //===================code by charlie===================
+    public GameObject viceChancellorGameObj; //Set in editor, stores vice chance game object
+    //=====================================================
+
     public enum TurnState { Move1, Move2, EndOfTurn, NULL };
     [SerializeField] private TurnState turnState;
     [SerializeField] private bool gameFinished = false;
     [SerializeField] private bool testMode = false;
+
 
 
     public TurnState GetTurnState() {
@@ -33,8 +38,6 @@ public class Game : MonoBehaviour {
     public void DisableTestMode() {
         testMode = false;
     }
-
-
 
     public void CreatePlayers(int numberOfPlayers){
 
@@ -67,7 +70,6 @@ public class Game : MonoBehaviour {
         // initialize all sectors, allocate players to landmarks,
         // and spawn units
 
-
 		// get an array of all sectors
         Sector[] sectors = gameMap.GetComponentsInChildren<Sector>();
 
@@ -76,18 +78,41 @@ public class Game : MonoBehaviour {
 		{
             sector.Initialize();
 		}
-            
-		// get an array of all sectors containing landmarks
+
+        //===================code by charlie===================
+        System.Random rnd = new System.Random(); //used to generate random numbers in selecting a random sector
+
+        Sector moveViceChance = sectors[0];
+
+        do
+        {
+            moveViceChance = sectors[rnd.Next(0, sectors.Length)]; //randomly select a sector (to vice the vice in to)
+        } while (moveViceChance.GetComponent<Sector>().GetLandmark() != null); //do not place vice on a sector already with landmark
+
+        viceChancellorGameObj.transform.SetParent(moveViceChance.transform); //move vice to selected sector
+
+        MeshCollider toMoveSectorPosition = moveViceChance.GetComponent<MeshCollider>(); //place vice on selected sector
+        viceChancellorGameObj.transform.position = new Vector3(toMoveSectorPosition.bounds.center.x, 2.03f, toMoveSectorPosition.bounds.center.z);
+
+        //Landmark viceNewLandmark = new Landmark();
+        //viceNewLandmark.SetResourceType(Landmark.ResourceType.ViceChancellor);
+
+        viceChancellorGameObj.GetComponent<Landmark>().SetResourceType(Landmark.ResourceType.ViceChancellor);
+
+        moveViceChance.GetComponent<Sector>().SetLandmark( viceChancellorGameObj.GetComponent<Landmark>() );
+
+        //=====================================================
+
+        // get an array of all sectors containing landmarks
         Sector[] landmarkedSectors = GetLandmarkedSectors(sectors);
-            
+
         // ensure there are at least as many landmarks as players
         if (landmarkedSectors.Length < players.Length)
         {
             throw new System.Exception("Must have at least as many landmarks as players; only " + landmarkedSectors.Length.ToString() + " landmarks found for " + players.Length.ToString() + " players.");
         }
 
-
-		// randomly allocate sectors to players
+        // randomly allocate sectors to players
         foreach (Player player in players) 
 		{
 			bool playerAllocated = false;
@@ -95,19 +120,28 @@ public class Game : MonoBehaviour {
                 
 				// choose a landmarked sector at random
                 int randomIndex = Random.Range (0, landmarkedSectors.Length);
-				
+
                 // if the sector is not yet allocated, allocate the player
-                if (((Sector) landmarkedSectors[randomIndex]).GetOwner() == null)
-				{
-                    player.Capture(landmarkedSectors[randomIndex]);
-					playerAllocated = true;
-				}
+
+                //===================code by charlie===================
+                Sector selectedSector = (Sector)landmarkedSectors[randomIndex];
+
+
+                if (selectedSector.GetLandmark().GetComponent<Landmark>().GetResourceType() != Landmark.ResourceType.ViceChancellor)
+                {
+                    if (selectedSector.GetOwner() == null)
+                    {
+                        player.Capture(landmarkedSectors[randomIndex]);
+                        playerAllocated = true;
+                    }
+                }
+                //======================================================
 
                 // retry until player is allocated
 			}
 		}
 
-		// spawn units for each player
+        // spawn units for each player
         foreach (Player player in players)
         {
             player.SpawnUnits();

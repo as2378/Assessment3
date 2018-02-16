@@ -61,8 +61,6 @@ public class Sector : MonoBehaviour {
         this.landmark = landmark;
     }
         
-	
-
 	public void Initialize() {
 
         // initialize the sector by setting its owner and unit to null
