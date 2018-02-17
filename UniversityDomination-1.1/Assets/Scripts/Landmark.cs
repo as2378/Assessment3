@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//=======code by charlie=========
+using UnityEngine.SceneManagement;
+//===============================
+
 
 public class Landmark : MonoBehaviour {
 
@@ -9,17 +13,31 @@ public class Landmark : MonoBehaviour {
         ,ViceChancellor //used to represent whether this landmark is the vice chancellor
     };
 
+    public GameObject scene1Thing1;
+    public GameObject scene1Thing2;
+    public GameObject scene1Thing3;
+
     public void viceChanceIsClicked()
     {
         if (GetComponentInParent<Sector>().GetOwner() != null)
         {
             if (GetComponentInParent<Sector>().GetOwner().IsActive() /*&& GetComponentInParent<Sector>().AdjacentSelectedUnit() != null*/)
             {
-
-                //start minigame
-                Debug.Log("aayyyyy");
+                StartCoroutine(loadThings());
             }
         }
+    }
+
+    IEnumerator loadThings()
+    {
+        var loading = SceneManager.LoadSceneAsync("miniGameScene", LoadSceneMode.Additive);
+        yield return loading;
+        Scene scene = SceneManager.GetSceneByName("miniGameScene");
+        SceneManager.SetActiveScene(scene);
+
+        scene1Thing1.SetActive(false);
+        scene1Thing2.SetActive(false);
+        scene1Thing3.SetActive(false);
     }
     //=======================================
 
