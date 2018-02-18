@@ -13,18 +13,30 @@ public class Landmark : MonoBehaviour {
         ,ViceChancellor //used to represent whether this landmark is the vice chancellor
     };
 
-    public GameObject scene1Thing1;
-    public GameObject scene1Thing2;
-    public GameObject scene1Thing3;
+    public GameObject GameManager;
+    public GameObject Map;
+    public GameObject GUI;
+    //public Player miniGamePlayer;
 
-    public void viceChanceIsClicked()
+    public void OnMouseDown()
     {
-        if (GetComponentInParent<Sector>().GetOwner() != null)
+        if ( GetComponentInParent<Sector>().GetOwner() != null)
         {
-            if (GetComponentInParent<Sector>().GetOwner().IsActive() /*&& GetComponentInParent<Sector>().AdjacentSelectedUnit() != null*/)
+            if (GetComponentInParent<Sector>().GetOwner().IsActive())
             {
+                //miniGamePlayer = GameManager.GetComponent<Game>().currentPlayer;
+
+                //GameManager.GetComponent<Game>().NextTurnState();
                 StartCoroutine(loadThings());
             }
+            else
+            {
+                GetComponentInParent<Sector>().OnMouseUpAsButtonAccessible();
+            }
+        }
+        else
+        {
+            GetComponentInParent<Sector>().OnMouseUpAsButtonAccessible();
         }
     }
 
@@ -35,9 +47,9 @@ public class Landmark : MonoBehaviour {
         Scene scene = SceneManager.GetSceneByName("miniGameScene");
         SceneManager.SetActiveScene(scene);
 
-        scene1Thing1.SetActive(false);
-        scene1Thing2.SetActive(false);
-        scene1Thing3.SetActive(false);
+        GameManager.SetActive(false);
+        Map.SetActive(false);
+        GUI.SetActive(false);
     }
     //=======================================
 

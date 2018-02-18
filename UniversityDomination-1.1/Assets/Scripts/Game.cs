@@ -70,7 +70,7 @@ public class Game : MonoBehaviour {
         // initialize all sectors, allocate players to landmarks,
         // and spawn units
 
-		// get an array of all sectors
+        // get an array of all sectors
         Sector[] sectors = gameMap.GetComponentsInChildren<Sector>();
 
 		// initialize each sector

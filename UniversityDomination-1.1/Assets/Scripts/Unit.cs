@@ -83,7 +83,6 @@ public class Unit : MonoBehaviour {
         // move the unit into the target sector, capturing it
         // and levelling up if necessary
 
-
         // clear the unit's current sector
         if (this.sector != null)
         {

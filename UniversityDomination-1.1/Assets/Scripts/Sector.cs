@@ -10,7 +10,6 @@ public class Sector : MonoBehaviour {
     [SerializeField] private Sector[] adjacentSectors;
 	[SerializeField] private Landmark landmark;
 
-
     public Map GetMap() {
         return map;
     }
@@ -65,7 +64,6 @@ public class Sector : MonoBehaviour {
 
         // initialize the sector by setting its owner and unit to null
         // and determining if it contains a landmark or not
-
 
 		// reset owner
 		SetOwner(null);
@@ -138,11 +136,17 @@ public class Sector : MonoBehaviour {
 
     }
 
+    IEnumerator waitForABit()
+    {
+        yield return new WaitForSeconds(2);
+    }
+
     public void OnMouseUpAsButtonAccessible() {
 
         // a method of OnMouseUpAsButton that is 
         // accessible to other objects for testing
 
+        waitForABit();
 
         // if this sector contains a unit and belongs to the
         // current active player, and if no unit is selected
@@ -171,15 +175,21 @@ public class Sector : MonoBehaviour {
 
             // if this sector is unoccupied
             if (unit == null)
+            {
                 MoveIntoUnoccupiedSector(selectedUnit);
+            }
 
             // if the sector is occupied by a friendly unit
             else if (unit.GetOwner() == selectedUnit.GetOwner())
+            {
                 MoveIntoFriendlyUnit(selectedUnit);
+            }
 
             // if the sector is occupied by a hostile unit
             else if (unit.GetOwner() != selectedUnit.GetOwner())
+            {
                 MoveIntoHostileUnit(selectedUnit, this.unit);
+            }
         }
     }
 

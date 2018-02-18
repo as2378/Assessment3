@@ -337,6 +337,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speechBubble: {fileID: 1527881426}
+  mainCamera: {fileID: 1548727046}
+  submitButton: {fileID: 2013612010}
   torsos:
   - {fileID: 21300000, guid: 4316c5c7309af6e43a724fba9c8ef39c, type: 3}
   - {fileID: 21300000, guid: 37c79994f239b0847a4b10a5e15421bb, type: 3}

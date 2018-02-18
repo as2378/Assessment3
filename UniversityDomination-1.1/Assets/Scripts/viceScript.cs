@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class viceScript : MonoBehaviour {
 
     public GameObject speechBubble; //the speech bubble showing how many clothing items were guessed correctly, set in editor
+
+    public GameObject mainCamera;
+
+    public GameObject submitButton;
 
     int guesses; //integer representing the number of guesses the user has submitted so far
 
@@ -83,18 +88,54 @@ public class viceScript : MonoBehaviour {
 
         if (correctGuesses == 2)
         {
-            speechBubble.GetComponentInChildren<Text>().text = "I love it! You win!";
+            speechBubble.GetComponentInChildren<Text>().text = "I love it! You win! \nHere's some beer & knowledge!";
+            GameObject.Find("arrowContainer").SetActive(false);
+
+            //reward player with points (4 beer, 5 knowledge) 
+            Game gameManager = SceneManager.GetSceneByName("TestScene").GetRootGameObjects()[0].GetComponent<Game>();
+            int newBeer = gameManager.currentPlayer.GetComponent<Player>().GetBeer() + 4;
+            int newKnowledge = gameManager.currentPlayer.GetComponent<Player>().GetKnowledge() + 4;
+            gameManager.currentPlayer.GetComponent<Player>().SetBeer(newBeer);
+            gameManager.currentPlayer.GetComponent<Player>().SetKnowledge(newKnowledge);
+            gameManager.GetComponent<Game>().NextTurnState();
+
+            StartCoroutine(waitSecs());
         }
         else if (guesses == 3)
         {
             speechBubble.GetComponentInChildren<Text>().text = "I've given you enough chances! Get out!";
+            GameObject.Find("arrowContainer").SetActive(false);
+
+            //reward player with points (4 beer, 5 knowledge) 
+            Game gameManager = SceneManager.GetSceneByName("TestScene").GetRootGameObjects()[0].GetComponent<Game>();
+            int newBeer = gameManager.currentPlayer.GetComponent<Player>().GetBeer() + 4;
+            int newKnowledge = gameManager.currentPlayer.GetComponent<Player>().GetKnowledge() + 4;
+            gameManager.currentPlayer.GetComponent<Player>().SetBeer(newBeer);
+            gameManager.currentPlayer.GetComponent<Player>().SetKnowledge(newKnowledge);
+            gameManager.GetComponent<Game>().NextTurnState();
+
+            StartCoroutine(waitSecs());
         }
         else
         {
             speechBubble.GetComponentInChildren<Text>().text = "You correctly guessed " + correctGuesses.ToString() +
                 " item(s) of clothing out of 2. You have " + (3 - guesses).ToString() + " guesses left.";
         }
+    }
 
-        //Debug.Log(correctGuesses.ToString());
+    IEnumerator waitSecs()
+    {
+        submitButton.SetActive(false);
+
+        yield return new WaitForSecondsRealtime(3);
+
+        mainCamera.GetComponent<AudioListener>().enabled = false;
+
+        foreach (GameObject rootObject in SceneManager.GetSceneByName("TestScene").GetRootGameObjects())
+        {
+            rootObject.SetActive(true);
+        }
+
+        SceneManager.UnloadSceneAsync(SceneManager.GetSceneByName("miniGameScene"));
     }
 }

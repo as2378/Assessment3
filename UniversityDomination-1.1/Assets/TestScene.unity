@@ -3996,47 +3996,11 @@ GameObject:
   m_PrefabParentObject: {fileID: 1504440961045024, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
     type: 2}
   m_PrefabInternal: {fileID: 2125394851}
---- !u!114 &656712112 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114786906048818158, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
-    type: 2}
-  m_PrefabInternal: {fileID: 2125394851}
-  m_Script: {fileID: 11500000, guid: 928ed867276256f4391fbf354639e2b0, type: 3}
 --- !u!4 &656712116 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4956928184798894, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
     type: 2}
   m_PrefabInternal: {fileID: 2125394851}
---- !u!114 &656712117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 656712111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 656712112}
-          m_MethodName: viceChanceIsClicked
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
 --- !u!1 &661196215
 GameObject:
   m_ObjectHideFlags: 0
@@ -4169,9 +4133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 928ed867276256f4391fbf354639e2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene1Thing1: {fileID: 0}
-  scene1Thing2: {fileID: 0}
-  scene1Thing3: {fileID: 0}
+  GameManager: {fileID: 0}
+  Map: {fileID: 0}
+  GUI: {fileID: 0}
+  miniGamePlayer: {fileID: 0}
   resourceType: 0
   amount: 2
 --- !u!1001 &676391469
@@ -11565,7 +11530,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 62
+  field of view: 65
   orthographic: 0
   orthographic size: 25.93
   m_Depth: -1
@@ -12737,6 +12702,30 @@ Prefab:
       propertyPath: scene1Thing3
       value: 
       objectReference: {fileID: 10664828}
+    - target: {fileID: 114786906048818158, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
+        type: 2}
+      propertyPath: GameManager
+      value: 
+      objectReference: {fileID: 369558829}
+    - target: {fileID: 114786906048818158, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
+        type: 2}
+      propertyPath: Map
+      value: 
+      objectReference: {fileID: 1549731849}
+    - target: {fileID: 114786906048818158, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
+        type: 2}
+      propertyPath: GUI
+      value: 
+      objectReference: {fileID: 10664828}
+    - target: {fileID: 65026661081338164, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1504440961045024, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7b4d2aaba7b1ee44e9d2ad5f88b564f0, type: 2}
   m_IsPrefabParent: 0
