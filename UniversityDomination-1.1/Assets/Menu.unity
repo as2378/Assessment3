@@ -2439,7 +2439,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1229310891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.800003, y: 125.992584, z: 0}
+  m_LocalPosition: {x: 4.800003, y: 114.92583, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1513073128}
@@ -3080,8 +3080,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1513073124}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 269.5, y: 159, z: 0}
-  m_LocalScale: {x: 0.67375, y: 0.67375, z: 0.67375}
+  m_LocalPosition: {x: 337, y: 189.5, z: 0}
+  m_LocalScale: {x: 0.8425, y: 0.8425, z: 0.8425}
   m_Children:
   - {fileID: 1854028783}
   - {fileID: 1229310892}
@@ -3719,7 +3719,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Volume: {fileID: 1189274995}
-  backgorundMusic: {fileID: 1628658696}
 --- !u!4 &1705349403
 Transform:
   m_ObjectHideFlags: 0
