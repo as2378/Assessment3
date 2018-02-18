@@ -7,6 +7,12 @@ public class Player : MonoBehaviour {
 	public List <Sector> ownedSectors;
     public List <Unit> units;
 
+    //========code by fred===========
+    [SerializeField] private bool moving = false;
+    [SerializeField] private Unit selectedUnit;
+    [SerializeField] private Sector selectedSector;
+    //===============================
+
     [SerializeField] private Game game;
     [SerializeField] private GameObject unitPrefab;
 	[SerializeField] private PlayerUI gui;
@@ -175,4 +181,51 @@ public class Player : MonoBehaviour {
         return false;
     }
 
+    //=================================code by fred==================================================
+    public bool IsMoving()
+    {
+        return moving;
+    }
+
+    public void setMoving(bool moving)
+    {
+        this.moving = moving;
+    }
+
+    public void ComputerTurn()
+    {
+        selectedUnit = units[Random.Range(0, units.Count)];                                                                                         // Chooses a random unit that can move
+        selectedUnit.Select();                                                                                                                      // Selects that unit
+        selectedSector = selectedUnit.GetSector().GetAdjacentSectors()[Random.Range(0, selectedUnit.GetSector().GetAdjacentSectors().Length)];      // Chooses a random sector that the selected unit can move into
+        if (selectedSector.GetUnit() == null)
+        {
+            selectedSector.MoveIntoUnoccupiedSector(selectedUnit);
+        }
+        // if the sector is occupied by a friendly unit
+        else if (selectedSector.GetUnit().GetOwner() == selectedUnit.GetOwner())
+        {
+            selectedSector.MoveIntoFriendlyUnit(selectedUnit);
+        }
+        // if the sector is occupied by a hostile unit
+        else if (selectedSector.GetUnit().GetOwner() != selectedUnit.GetOwner())
+        {
+            selectedSector.MoveIntoHostileUnit(selectedUnit, this.selectedSector.GetUnit());
+        }
+        selectedUnit.Deselect();
+        //SetMoving(false);
+        setMoving(false);
+    }
+
+    public void Update()
+    {
+        if (IsHuman() == false && IsActive() && IsMoving() == false)
+        {
+            //SetMoving(true);
+            setMoving(true);
+            ComputerTurn();
+        }
+    }
+
+
+    //================================================================================================
 }
