@@ -38,7 +38,38 @@ public class Unit : MonoBehaviour {
     }
 
     public void SetLevel(int level) {
+        // level up the unit, capping at Level 5
+
         this.level = level;
+
+        if (level <= 5)
+        {
+
+            // change texture to reflect new level
+            switch (level)
+            {
+                case 2:
+                    this.gameObject.GetComponent<MeshRenderer>().material = level2Material;
+                    break;
+                case 3:
+                    this.gameObject.GetComponent<MeshRenderer>().material = level3Material;
+                    break;
+                case 4:
+                    this.gameObject.GetComponent<MeshRenderer>().material = level4Material;
+                    break;
+                case 5:
+                    this.gameObject.GetComponent<MeshRenderer>().material = level5Material;
+                    break;
+                default:
+                    this.gameObject.GetComponent<MeshRenderer>().material = level1Material;
+                    break;
+            }
+
+            // set material color to match owner color
+            GetComponent<Renderer>().material.color = color;
+
+        }
+
     }
 
     public Color GetColor() {

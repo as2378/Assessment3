@@ -11,13 +11,10 @@ public class Initializer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        game.Initialize();
+        AudioListener.pause = false;
 
-        //=======code by charlie================
-        //SceneManager.LoadScene("miniGameScene");
-        //SceneManager.SetActiveScene()
-        //======================================
-	}
+        game.Initialize();
+    }
 
 
 	

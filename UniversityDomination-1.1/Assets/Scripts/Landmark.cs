@@ -16,7 +16,6 @@ public class Landmark : MonoBehaviour {
     public GameObject GameManager;
     public GameObject Map;
     public GameObject GUI;
-    //public Player miniGamePlayer;
 
     public void OnMouseDown()
     {
@@ -27,7 +26,7 @@ public class Landmark : MonoBehaviour {
                 //miniGamePlayer = GameManager.GetComponent<Game>().currentPlayer;
 
                 //GameManager.GetComponent<Game>().NextTurnState();
-                StartCoroutine(loadThings());
+                StartCoroutine(loadMiniGame());
             }
             else
             {
@@ -40,7 +39,7 @@ public class Landmark : MonoBehaviour {
         }
     }
 
-    IEnumerator loadThings()
+    IEnumerator loadMiniGame()
     {
         var loading = SceneManager.LoadSceneAsync("miniGameScene", LoadSceneMode.Additive);
         yield return loading;

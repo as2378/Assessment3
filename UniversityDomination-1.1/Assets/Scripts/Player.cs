@@ -83,8 +83,6 @@ public class Player : MonoBehaviour {
         this.active = active;
     }
 
-
-
     public void Capture(Sector sector) {
 
         // capture the given sector
@@ -129,7 +127,6 @@ public class Player : MonoBehaviour {
     public void SpawnUnits() {
 
         // spawn a unit at each unoccupied landmark
-
 
         // scan through each owned sector
 		foreach (Sector sector in ownedSectors) 
@@ -194,8 +191,25 @@ public class Player : MonoBehaviour {
 
     public void ComputerTurn()
     {
+        StartCoroutine( playComputerMove() );
+
+    }
+
+    public void Update()
+    {
+        if (IsHuman() == false && IsActive() && IsMoving() == false)
+        {
+            setMoving(true);
+            ComputerTurn();
+        }
+    }
+
+    IEnumerator playComputerMove()
+    {
         selectedUnit = units[Random.Range(0, units.Count)];                                                                                         // Chooses a random unit that can move
-        selectedUnit.Select();                                                                                                                      // Selects that unit
+
+        yield return new WaitForSeconds(1);
+
         selectedSector = selectedUnit.GetSector().GetAdjacentSectors()[Random.Range(0, selectedUnit.GetSector().GetAdjacentSectors().Length)];      // Chooses a random sector that the selected unit can move into
         if (selectedSector.GetUnit() == null)
         {
@@ -211,21 +225,8 @@ public class Player : MonoBehaviour {
         {
             selectedSector.MoveIntoHostileUnit(selectedUnit, this.selectedSector.GetUnit());
         }
-        selectedUnit.Deselect();
-        //SetMoving(false);
         setMoving(false);
     }
-
-    public void Update()
-    {
-        if (IsHuman() == false && IsActive() && IsMoving() == false)
-        {
-            //SetMoving(true);
-            setMoving(true);
-            ComputerTurn();
-        }
-    }
-
 
     //================================================================================================
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
@@ -8,8 +9,11 @@ public class Game : MonoBehaviour {
 	public GameObject gameMap;
     public Player currentPlayer;
 
+
     //===================code by charlie===================
     public GameObject viceChancellorGameObj; //Set in editor, stores vice chance game object
+    public GameObject winner;
+    public GameObject winnerScreen;
     //=====================================================
 
     public enum TurnState { Move1, Move2, EndOfTurn, NULL };
@@ -80,26 +84,7 @@ public class Game : MonoBehaviour {
 		}
 
         //===================code by charlie===================
-        System.Random rnd = new System.Random(); //used to generate random numbers in selecting a random sector
-
-        Sector moveViceChance = sectors[0];
-
-        do
-        {
-            moveViceChance = sectors[rnd.Next(0, sectors.Length)]; //randomly select a sector (to vice the vice in to)
-        } while (moveViceChance.GetComponent<Sector>().GetLandmark() != null); //do not place vice on a sector already with landmark
-
-        viceChancellorGameObj.transform.SetParent(moveViceChance.transform); //move vice to selected sector
-
-        MeshCollider toMoveSectorPosition = moveViceChance.GetComponent<MeshCollider>(); //place vice on selected sector
-        viceChancellorGameObj.transform.position = new Vector3(toMoveSectorPosition.bounds.center.x, 2.03f, toMoveSectorPosition.bounds.center.z);
-
-        //Landmark viceNewLandmark = new Landmark();
-        //viceNewLandmark.SetResourceType(Landmark.ResourceType.ViceChancellor);
-
-        viceChancellorGameObj.GetComponent<Landmark>().SetResourceType(Landmark.ResourceType.ViceChancellor);
-
-        moveViceChance.GetComponent<Sector>().SetLandmark( viceChancellorGameObj.GetComponent<Landmark>() );
+        spawnVice(-1); //space vice chancellor (-1 indicates to spawn him randomly)
 
         //=====================================================
 
@@ -148,6 +133,38 @@ public class Game : MonoBehaviour {
         }
 
 	}
+
+    public void spawnVice(int sectorID) //set vice chancellor landmark, if sectorID is -1 then place randomly
+    {
+        Sector[] sectors = gameMap.GetComponentsInChildren<Sector>();
+
+        Sector moveViceChance = sectors[0];
+
+        if (sectorID == -1)
+        {
+
+            System.Random rnd = new System.Random(); //used to generate random numbers in selecting a random sector
+
+            do
+            {
+                moveViceChance = sectors[rnd.Next(0, sectors.Length)]; //randomly select a sector (to vice the vice in to)
+            } while (moveViceChance.GetComponent<Sector>().GetLandmark() != null); //do not place vice on a sector already with landmark
+
+        }
+        else
+        {
+            moveViceChance = sectors[sectorID];
+        }
+
+        viceChancellorGameObj.transform.SetParent(moveViceChance.transform); //move vice to selected sector
+
+        MeshCollider toMoveSectorPosition = moveViceChance.GetComponent<MeshCollider>(); //place vice on selected sector
+        viceChancellorGameObj.transform.position = new Vector3(toMoveSectorPosition.bounds.center.x, 2.03f, toMoveSectorPosition.bounds.center.z);
+
+        viceChancellorGameObj.GetComponent<Landmark>().SetResourceType(Landmark.ResourceType.ViceChancellor);
+
+        moveViceChance.GetComponent<Sector>().SetLandmark(viceChancellorGameObj.GetComponent<Landmark>());
+    }
 
     private Sector[] GetLandmarkedSectors(Sector[] sectors) {
 
@@ -282,15 +299,26 @@ public class Game : MonoBehaviour {
         }
 
         // if only one player hasn't been eliminated, then return it as the winner
+        this.winner = winner.gameObject;
         return winner;
     }
 
     public void EndGame() {
         gameFinished = true;
         currentPlayer.SetActive(false);
+        gameMap.SetActive(false);
         currentPlayer = null;
         turnState = TurnState.NULL;
-        Debug.Log("GAME FINISHED");
+
+        //======code by charlie=======
+        winnerScreen.SetActive(true);
+        string congratsMessage = "Congratulations " + winner.name + " you won!";
+        winnerScreen.GetComponentInChildren<Text>().text = congratsMessage;
+        //this.gameObject.SetActive(false);
+
+        //============================
+
+        //Debug.Log("GAME FINISHED");
     }
 
 	public void UpdateGUI() {
@@ -307,25 +335,41 @@ public class Game : MonoBehaviour {
 
 
         // create a specified number of human players
-        // *** currently hard-wired to 2 for testing ***
-        CreatePlayers(2);
+        CreatePlayers( staticPassArguments.humanPlayers );
 
-        // initialize the map and allocate players to landmarks
-        InitializeMap();
+        //======code by charlie======
+        if (staticPassArguments.loadGame == true)
+        {
+            this.gameObject.GetComponent<GameControl>().Load();
+        }
+        else
+        {
+            // initialize the map and allocate players to landmarks
+            InitializeMap();
 
-        // initialize the turn state
-        turnState = TurnState.Move1;
+            // initialize the turn state
+            turnState = TurnState.Move1;
 
-        // set Player 1 as the current player
-        currentPlayer = players[0];
-		currentPlayer.GetGui().Activate();
-        players[0].SetActive(true);
+            // set Player 1 as the current player
+            currentPlayer = players[0];
+            currentPlayer.GetGui().Activate();
+            players[0].SetActive(true);
 
+<<<<<<< HEAD
 		// update GUIs
 		UpdateGUI();
         GameControl.control.Save();
 	}
+=======
+        }
 
+        //===========================
+>>>>>>> origin/MenuMerge
+
+        // update GUIs
+        UpdateGUI();
+
+	}
         
     void Update () {
 
