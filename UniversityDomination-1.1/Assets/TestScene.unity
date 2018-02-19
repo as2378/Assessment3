@@ -2769,6 +2769,7 @@ MonoBehaviour:
   - {fileID: 1369005491}
   gameMap: {fileID: 1549731849}
   currentPlayer: {fileID: 78266717}
+  camera: {fileID: 1926160056}
   viceChancellorGameObj: {fileID: 656712111}
   winner: {fileID: 0}
   winnerScreen: {fileID: 997499915}

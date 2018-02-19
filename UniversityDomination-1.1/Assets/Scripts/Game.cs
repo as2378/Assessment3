@@ -300,7 +300,8 @@ public class Game : MonoBehaviour {
         winnerScreen.SetActive(true);
         string congratsMessage = "Congratulations " + winner.name + " you won!";
         winnerScreen.GetComponentInChildren<Text>().text = congratsMessage;
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
+
         //============================
 
         //Debug.Log("GAME FINISHED");
