@@ -108,10 +108,6 @@ public class viceScript : MonoBehaviour {
 
             //reward player with points (4 beer, 5 knowledge) 
             Game gameManager = SceneManager.GetSceneByName("TestScene").GetRootGameObjects()[0].GetComponent<Game>();
-            int newBeer = gameManager.currentPlayer.GetComponent<Player>().GetBeer() + 4;
-            int newKnowledge = gameManager.currentPlayer.GetComponent<Player>().GetKnowledge() + 4;
-            gameManager.currentPlayer.GetComponent<Player>().SetBeer(newBeer);
-            gameManager.currentPlayer.GetComponent<Player>().SetKnowledge(newKnowledge);
             gameManager.GetComponent<Game>().NextTurnState();
 
             StartCoroutine(waitSecs());

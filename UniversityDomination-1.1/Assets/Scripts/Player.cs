@@ -83,8 +83,6 @@ public class Player : MonoBehaviour {
         this.active = active;
     }
 
-
-
     public void Capture(Sector sector) {
 
         // capture the given sector
@@ -129,7 +127,6 @@ public class Player : MonoBehaviour {
     public void SpawnUnits() {
 
         // spawn a unit at each unoccupied landmark
-
 
         // scan through each owned sector
 		foreach (Sector sector in ownedSectors) 

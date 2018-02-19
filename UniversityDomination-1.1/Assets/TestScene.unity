@@ -2820,6 +2820,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   game: {fileID: 369558830}
   map: {fileID: 1549731849}
+  viceChancellor: {fileID: 656712111}
+  player1UnitPrefab: {fileID: 1005237642776706, guid: e44a5fa07bc4cf145a4771f52385f525,
+    type: 2}
+  player2UnitPrefab: {fileID: 1005237642776706, guid: 26a26f6c35e02e741b6011ca4d58b14b,
+    type: 2}
+  player3UnitPrefab: {fileID: 1005237642776706, guid: 6d8addf51e1b32f4ea5444b9e4052acc,
+    type: 2}
+  player4UnitPrefab: {fileID: 1005237642776706, guid: 1486e80e1d1c1034790e21d826787651,
+    type: 2}
 --- !u!1001 &373963877
 Prefab:
   m_ObjectHideFlags: 0
