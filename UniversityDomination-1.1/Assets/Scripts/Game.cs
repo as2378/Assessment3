@@ -328,14 +328,15 @@ public class Game : MonoBehaviour {
 			players [i].GetGui ().UpdateDisplay ();
 		}
 	}
-        
-    public void Initialize () {
-        
+
+    public void Initialize()
+    {
+
         // initialize the game
 
 
         // create a specified number of human players
-        CreatePlayers( staticPassArguments.humanPlayers );
+        CreatePlayers(staticPassArguments.humanPlayers);
 
         //======code by charlie======
         if (staticPassArguments.loadGame == true)
@@ -355,21 +356,12 @@ public class Game : MonoBehaviour {
             currentPlayer.GetGui().Activate();
             players[0].SetActive(true);
 
-<<<<<<< HEAD
-		// update GUIs
-		UpdateGUI();
-        GameControl.control.Save();
-	}
-=======
+            // update GUIs
+            UpdateGUI();
+            GameControl.control.Save();
         }
+    }
 
-        //===========================
->>>>>>> origin/MenuMerge
-
-        // update GUIs
-        UpdateGUI();
-
-	}
         
     void Update () {
 
