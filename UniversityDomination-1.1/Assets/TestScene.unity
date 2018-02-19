@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -468,6 +468,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedSectors: []
   units: []
+  moving: 0
+  selectedUnit: {fileID: 0}
+  selectedSector: {fileID: 0}
   game: {fileID: 369558830}
   unitPrefab: {fileID: 1005237642776706, guid: e44a5fa07bc4cf145a4771f52385f525, type: 2}
   gui: {fileID: 25781009}
@@ -2306,6 +2309,7 @@ GameObject:
   - component: {fileID: 369558831}
   - component: {fileID: 369558830}
   - component: {fileID: 369558832}
+  - component: {fileID: 369558833}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2367,6 +2371,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   game: {fileID: 369558830}
+--- !u!114 &369558833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 369558829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebce2b7ad31b15d41a6beb1b38112399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game: {fileID: 369558830}
+  map: {fileID: 1549731849}
+  unitPrefab: {fileID: 1005237642776706, guid: e44a5fa07bc4cf145a4771f52385f525, type: 2}
 --- !u!1001 &373963877
 Prefab:
   m_ObjectHideFlags: 0
@@ -4136,7 +4154,6 @@ MonoBehaviour:
   GameManager: {fileID: 0}
   Map: {fileID: 0}
   GUI: {fileID: 0}
-  miniGamePlayer: {fileID: 0}
   resourceType: 0
   amount: 2
 --- !u!1001 &676391469
@@ -4438,6 +4455,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedSectors: []
   units: []
+  moving: 0
+  selectedUnit: {fileID: 0}
+  selectedSector: {fileID: 0}
   game: {fileID: 369558830}
   unitPrefab: {fileID: 1005237642776706, guid: 26a26f6c35e02e741b6011ca4d58b14b, type: 2}
   gui: {fileID: 1590918745}
@@ -8082,6 +8102,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedSectors: []
   units: []
+  moving: 0
+  selectedUnit: {fileID: 0}
+  selectedSector: {fileID: 0}
   game: {fileID: 369558830}
   unitPrefab: {fileID: 1005237642776706, guid: 1486e80e1d1c1034790e21d826787651, type: 2}
   gui: {fileID: 1507163498}
@@ -8132,6 +8155,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ownedSectors: []
   units: []
+  moving: 0
+  selectedUnit: {fileID: 0}
+  selectedSector: {fileID: 0}
   game: {fileID: 369558830}
   unitPrefab: {fileID: 1005237642776706, guid: 6d8addf51e1b32f4ea5444b9e4052acc, type: 2}
   gui: {fileID: 722604580}

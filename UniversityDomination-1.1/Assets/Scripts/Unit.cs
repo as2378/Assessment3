@@ -6,7 +6,7 @@ public class Unit : MonoBehaviour {
 
     [SerializeField] private Player owner;
     [SerializeField] private Sector sector;
-    [SerializeField] private int level;
+    [SerializeField] public int level;
     [SerializeField] private Color color;
     [SerializeField] private bool selected = false;
 

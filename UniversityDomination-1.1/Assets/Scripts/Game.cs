@@ -247,6 +247,7 @@ public class Game : MonoBehaviour {
         }
 
 		UpdateGUI();
+        GameControl.control.Load();
     }
 
     public void EndTurn() {
@@ -322,7 +323,7 @@ public class Game : MonoBehaviour {
 
 		// update GUIs
 		UpdateGUI();
-
+        GameControl.control.Save();
 	}
 
         
