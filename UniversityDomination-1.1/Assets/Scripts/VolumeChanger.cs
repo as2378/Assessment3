@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class VolumeChanger : MonoBehaviour {
 
-    public Slider Volume;
+    //public Slider Volume;
    
 	// Update is called once per frame
 	void Update () {
-        AudioListener.volume = Volume.value; // set music volume to value of slider
+        AudioListener.volume = this.gameObject.GetComponent<Slider>().value; // set music volume to value of slider
 	}
 }

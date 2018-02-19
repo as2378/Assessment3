@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
@@ -8,8 +9,11 @@ public class Game : MonoBehaviour {
 	public GameObject gameMap;
     public Player currentPlayer;
 
+
     //===================code by charlie===================
     public GameObject viceChancellorGameObj; //Set in editor, stores vice chance game object
+    public GameObject winner;
+    public GameObject winnerScreen;
     //=====================================================
 
     public enum TurnState { Move1, Move2, EndOfTurn, NULL };
@@ -281,15 +285,25 @@ public class Game : MonoBehaviour {
         }
 
         // if only one player hasn't been eliminated, then return it as the winner
+        this.winner = winner.gameObject;
         return winner;
     }
 
     public void EndGame() {
         gameFinished = true;
         currentPlayer.SetActive(false);
+        gameMap.SetActive(false);
         currentPlayer = null;
         turnState = TurnState.NULL;
-        Debug.Log("GAME FINISHED");
+
+        //======code by charlie=======
+        winnerScreen.SetActive(true);
+        string congratsMessage = "Congratulations " + winner.name + " you won!";
+        winnerScreen.GetComponentInChildren<Text>().text = congratsMessage;
+        this.gameObject.SetActive(false);
+        //============================
+
+        //Debug.Log("GAME FINISHED");
     }
 
 	public void UpdateGUI() {
@@ -306,8 +320,7 @@ public class Game : MonoBehaviour {
 
 
         // create a specified number of human players
-        // *** currently hard-wired to 2 for testing ***
-        CreatePlayers(2);
+        CreatePlayers( staticPassArguments.humanPlayers );
 
         // initialize the map and allocate players to landmarks
         InitializeMap();
@@ -323,8 +336,14 @@ public class Game : MonoBehaviour {
 		// update GUIs
 		UpdateGUI();
 
-	}
+        //======code by charlie======
+        if (staticPassArguments.loadGame == true)
+        {
+            this.gameObject.GetComponent<GameControl>().Load();
+        }
+        //===========================
 
+	}
         
     void Update () {
 

@@ -194,8 +194,46 @@ public class Player : MonoBehaviour {
 
     public void ComputerTurn()
     {
+        StartCoroutine( playComputerMove() );
+
+        //selectedUnit = units[Random.Range(0, units.Count)];                                                                                         // Chooses a random unit that can move
+        //selectedUnit.Select();
+        //selectedSector = selectedUnit.GetSector().GetAdjacentSectors()[Random.Range(0, selectedUnit.GetSector().GetAdjacentSectors().Length)];      // Chooses a random sector that the selected unit can move into
+        //if (selectedSector.GetUnit() == null)
+        //{
+        //    selectedSector.MoveIntoUnoccupiedSector(selectedUnit);
+        //}
+        //// if the sector is occupied by a friendly unit
+        //else if (selectedSector.GetUnit().GetOwner() == selectedUnit.GetOwner())
+        //{
+        //    selectedSector.MoveIntoFriendlyUnit(selectedUnit);
+        //}
+        //// if the sector is occupied by a hostile unit
+        //else if (selectedSector.GetUnit().GetOwner() != selectedUnit.GetOwner())
+        //{
+        //    selectedSector.MoveIntoHostileUnit(selectedUnit, this.selectedSector.GetUnit());
+        //}
+        //setMoving(false);
+    }
+
+    public void Update()
+    {
+        if (IsHuman() == false && IsActive() && IsMoving() == false)
+        {
+            setMoving(true);
+            ComputerTurn();
+        }
+    }
+
+    IEnumerator playComputerMove()
+    {
         selectedUnit = units[Random.Range(0, units.Count)];                                                                                         // Chooses a random unit that can move
-        selectedUnit.Select();                                                                                                                      // Selects that unit
+        selectedUnit.Select();
+
+        yield return new WaitForSeconds(1);
+
+        selectedUnit.Deselect();
+
         selectedSector = selectedUnit.GetSector().GetAdjacentSectors()[Random.Range(0, selectedUnit.GetSector().GetAdjacentSectors().Length)];      // Chooses a random sector that the selected unit can move into
         if (selectedSector.GetUnit() == null)
         {
@@ -211,21 +249,8 @@ public class Player : MonoBehaviour {
         {
             selectedSector.MoveIntoHostileUnit(selectedUnit, this.selectedSector.GetUnit());
         }
-        selectedUnit.Deselect();
-        //SetMoving(false);
         setMoving(false);
     }
-
-    public void Update()
-    {
-        if (IsHuman() == false && IsActive() && IsMoving() == false)
-        {
-            //SetMoving(true);
-            setMoving(true);
-            ComputerTurn();
-        }
-    }
-
 
     //================================================================================================
 }
