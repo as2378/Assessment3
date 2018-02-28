@@ -263,5 +263,31 @@ public class UnitTest
 
         // extract the unit prefab from the player class
         unitPrefab = players[0].GetUnitPrefab();
+
+		//ASSESSMENT4 ADDITION:
+		GameObject winScreen = new GameObject();
+		winScreen.AddComponent<UnityEngine.UI.Text> ();
+		winScreen.name = "winScreen";
+		game.winnerScreen = winScreen;
+
+		GameObject pvc = new GameObject ();
+		pvc.AddComponent<Landmark> ();
+		pvc.AddComponent<MeshRenderer> ();
+		pvc.AddComponent<MeshCollider> ();
+		pvc.name = "PVC";
+		game.viceChancellorGameObj = pvc;
     }
+
+	/*
+	 * ASSESSMENT4 ADDITION: added this teardown method to clear the scene of all the gameobjects.
+	 * This means that the tests do not keep adding gameobjects to the scene, which slowed them down.
+	 */
+	[TearDown] 
+	public void ClearSceneAfterTest(){
+		GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in objects)
+		{
+			GameObject.Destroy (gameObject);
+		}
+	}
 }

@@ -48,6 +48,10 @@ public class Game : MonoBehaviour {
         testMode = false;
     }
 
+	/*
+	 * ASSESSMENT4 ADDITION: added an (i < numberOfPlayers) if statement to ensure that the correct
+	 * number of players are human/non-human.
+	 */ 
     public void CreatePlayers(int numberOfPlayers){
 
         // ensure that the specified number of players
@@ -58,10 +62,14 @@ public class Game : MonoBehaviour {
         if (numberOfPlayers > 4) 
             numberOfPlayers = 4;
 
-        // mark the specified number of players as human
-        for (int i = 0; i < numberOfPlayers; i++)
+        // mark the specified number of players as human and non-human
+        for (int i = 0; i < 4; i++)
         {
-            players[i].SetHuman(true);
+			if (i < numberOfPlayers) {
+				players [i].SetHuman (true);
+			} else {
+				players [i].SetHuman (false);
+			}
         }
 
         // give all players a reference to this game
@@ -316,13 +324,12 @@ public class Game : MonoBehaviour {
 
         //======code by charlie=======
         winnerScreen.SetActive(true);
-        string congratsMessage = "Congratulations " + winner.name + " you won!";
-        winnerScreen.GetComponentInChildren<Text>().text = congratsMessage;
+		if (winner != null) {
+			string congratsMessage = "Congratulations " + winner.name + " you won!";
+			winnerScreen.GetComponentInChildren<Text> ().text = congratsMessage;
+		}
         //this.gameObject.SetActive(false);
-
         //============================
-
-        //Debug.Log("GAME FINISHED");
     }
 
 	public void UpdateGUI() {

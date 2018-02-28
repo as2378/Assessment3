@@ -206,28 +206,35 @@ public class Player : MonoBehaviour {
         }
     }
 
+	/*
+	 * ASSESSMENT4 ADDITION: added an if statement at the start of the method that makes sure that
+	 * the AI only makes moves when the turn has not finished or when turnstate is NULL.
+	 * Used to fix a bug where the AI uses Move1 of the next-player's turn.
+	 */
     IEnumerator playComputerMove()
-    {
-        selectedUnit = units[Random.Range(0, units.Count)];                                                                                         // Chooses a random unit that can move
+	{
+		if (game.GetTurnState () != Game.TurnState.EndOfTurn && game.GetTurnState () != Game.TurnState.NULL)  //ADDITION
+		{
+			selectedUnit = units [Random.Range (0, units.Count)];                                                                                         // Chooses a random unit that can move
 
-        yield return new WaitForSeconds(1);
+			yield return new WaitForSeconds (1);
 
-        selectedSector = selectedUnit.GetSector().GetAdjacentSectors()[Random.Range(0, selectedUnit.GetSector().GetAdjacentSectors().Length)];      // Chooses a random sector that the selected unit can move into
-        if (selectedSector.GetUnit() == null) // if the sector is empty 
-        {
-            selectedSector.MoveIntoUnoccupiedSector(selectedUnit);
-        }
-        // if the sector is occupied by a friendly unit
-        else if (selectedSector.GetUnit().GetOwner() == selectedUnit.GetOwner())
-        {
-            selectedSector.MoveIntoFriendlyUnit(selectedUnit);
-        }
-        // if the sector is occupied by a hostile unit
-        else if (selectedSector.GetUnit().GetOwner() != selectedUnit.GetOwner())
-        {
-            selectedSector.MoveIntoHostileUnit(selectedUnit, this.selectedSector.GetUnit());
-        }
-        setMoving(false);
+			selectedSector = selectedUnit.GetSector ().GetAdjacentSectors () [Random.Range (0, selectedUnit.GetSector ().GetAdjacentSectors ().Length)];      // Chooses a random sector that the selected unit can move into
+			if (selectedSector.GetUnit () == null) { // if the sector is empty 
+				selectedSector.MoveIntoUnoccupiedSector (selectedUnit);
+			}
+	        // if the sector is occupied by a friendly unit
+	        else if (selectedSector.GetUnit ().GetOwner () == selectedUnit.GetOwner ()) {
+				selectedSector.MoveIntoFriendlyUnit (selectedUnit);
+			}
+	        // if the sector is occupied by a hostile unit
+	        else if (selectedSector.GetUnit ().GetOwner () != selectedUnit.GetOwner ()) {
+				selectedSector.MoveIntoHostileUnit (selectedUnit, this.selectedSector.GetUnit ());
+			}
+			setMoving (false);
+		}
+		else
+			setMoving (false);
     }
 
     //================================================================================================

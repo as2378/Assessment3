@@ -132,13 +132,16 @@ public class Sector : MonoBehaviour {
         unit = null;
     }
 
+	/*
+	 * ASSESSMENT4 ADDITION: added a check to this click function which fixes a bug where human
+	 * users can select the AI's units during the AI's turn.
+	 */
     void OnMouseUpAsButton () {
-
-        // when this sector is clicked, determine the context
-        // and act accordingly
-
-		OnMouseUpAsButtonAccessible();
-
+        // when this sector is clicked, determine the context and act accordingly
+		if (map.game.currentPlayer.IsHuman ()) 
+		{
+			OnMouseUpAsButtonAccessible ();
+		}
     }
 
     IEnumerator waitForABit()

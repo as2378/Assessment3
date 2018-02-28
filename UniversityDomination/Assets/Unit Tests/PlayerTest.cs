@@ -17,7 +17,7 @@ public class PlayerTest
         game.InitializeMap();
 
         Player previousOwner = map.sectors[0].GetOwner();
-     //   bool run = false; // used to decide whether to check previous players sector list (if no previous owner, do not look in list)
+       // bool run = false; // used to decide whether to check previous players sector list (if no previous owner, do not look in list)
 
        // if (map.sectors[0].GetOwner() != null)
        // {            
@@ -265,7 +265,10 @@ public class PlayerTest
         yield return null;
     }
 
-
+	/*
+	 * ASSESSMENT4 ADDITION: added code which creates a PVC unit, places it within the scene and
+	 * links it to the game class.
+	 */
     private void Setup() {
         
         // initialize the game, map, and players with any references needed
@@ -310,6 +313,35 @@ public class PlayerTest
 			players[i].SetGui(gui[i]);
 			players[i].SetGame(game);
 			players[i].GetGui().Initialize(players[i], i + 1);
+			players [i].SetHuman (true);
 		}
+		// enable game's test mode
+		game.EnableTestMode();
+
+		//ASSESSMENT4 ADDITION:
+		GameObject winScreen = new GameObject();
+		winScreen.AddComponent<UnityEngine.UI.Text> ();
+		winScreen.name = "winScreen";
+		game.winnerScreen = winScreen;
+
+		GameObject pvc = new GameObject ();
+		pvc.AddComponent<Landmark> ();
+		pvc.AddComponent<MeshRenderer> ();
+		pvc.AddComponent<MeshCollider> ();
+		pvc.name = "PVC";
+		game.viceChancellorGameObj = pvc;
     }
+
+	/*
+	 * ASSESSMENT4 ADDITION: added this teardown method to clear the scene of all the gameobjects.
+	 * This means that the tests do not keep adding gameobjects to the scene, which slowed them down.
+	 */
+	[TearDown] 
+	public void ClearSceneAfterTest(){
+		GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in objects)
+		{
+			GameObject.Destroy (gameObject);
+		}
+	}
 }

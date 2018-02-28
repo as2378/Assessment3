@@ -360,9 +360,11 @@ public class GameTest
         yield return null;
     }
 
-
+	/*
+	 * ASSESSMENT4 ADDITION: added code which creates a PVC unit, places it within the scene and
+	 * links it to the game class.
+	 */
     private void Setup() {
-        
         // initialize the game, map, and players with any references needed
         // the "GameManager" asset contains a copy of the GameManager object
         // in the 4x4 Test, but its script lacks references to players & the map
@@ -404,10 +406,24 @@ public class GameTest
 			players[i].SetGui(gui[i]);
 			players[i].SetGame(game);
 			players[i].GetGui().Initialize(players[i], i + 1);
+			players[i].SetHuman (true);
 		}
 
         // enable game's test mode
         game.EnableTestMode();
+
+		//ASSESSMENT4 ADDITION:
+		GameObject winScreen = new GameObject();
+		winScreen.AddComponent<UnityEngine.UI.Text> ();
+		winScreen.name = "winScreen";
+		game.winnerScreen = winScreen;
+
+		GameObject pvc = new GameObject ();
+		pvc.AddComponent<Landmark> ();
+		pvc.AddComponent<MeshRenderer> ();
+		pvc.AddComponent<MeshCollider> ();
+		pvc.name = "PVC";
+		game.viceChancellorGameObj = pvc;
     }
 
     private void ClearSectorsAndUnitsOfAllPlayers() {
@@ -423,4 +439,17 @@ public class GameTest
         player.units = new List<Unit>();
         player.ownedSectors = new List<Sector>();
     }
+
+	/*
+	 * ASSESSMENT4 ADDITION: added this teardown method to clear the scene of all the gameobjects.
+	 * This means that the tests do not keep adding gameobjects to the scene, which slowed them down.
+	 */
+	[TearDown] 
+	public void ClearSceneAfterTest(){
+		GameObject[] objects = GameObject.FindObjectsOfType<GameObject>();
+		foreach (GameObject gameObject in objects)
+		{
+			GameObject.Destroy (gameObject);
+		}
+	}
 }
