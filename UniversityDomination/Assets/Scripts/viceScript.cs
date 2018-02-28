@@ -10,17 +10,14 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class viceScript : MonoBehaviour {
-
     public GameObject speechBubble; //the speech bubble showing how many clothing items were guessed correctly, set in editor
-
     public GameObject mainCamera;
-
     public GameObject submitButton;
 
-    int guesses; //integer representing the number of guesses the user has submitted so far
+	private int guesses; //integer representing the number of guesses the user has submitted so far
 
-    int correctTorso; //integer representing the correct torso clothing
-    int correctLegs; //integer representing the correct legs clothing
+	private int correctTorso; //integer representing the correct torso clothing
+	private int correctLegs; //integer representing the correct legs clothing
 
     public List<Sprite> torsos; //list of possible torso clothes, set in editor
     public List<Sprite> legs; //list of possible leg clothes, set in editor
@@ -28,8 +25,27 @@ public class viceScript : MonoBehaviour {
     public GameObject torso; //panel gameobject representing torso, set in editor
     public GameObject leg; //panel gameobject representing legs, set in editor
 
-    int torsoChoice; //integer representing which torso sprite the user has selected
-    int legChoice; //integer representing which leg sprite the user has selected
+	private int torsoChoice; //integer representing which torso sprite the user has selected
+    private int legChoice; //integer representing which leg sprite the user has selected
+
+	//ASSESSMENT4 ADDITIONS ---------
+	//Added accessors to allow for easier unit testing.
+	public int GetNumberOfGuesses(){
+		return this.guesses;
+	}
+	public int GetCorrectTorso(){
+		return this.correctTorso;
+	}
+	public int GetCorrectLegs(){
+		return this.correctLegs;
+	}
+	public int GetTorsoChoice(){
+		return this.torsoChoice;
+	}
+	public int GetLegChoice(){
+		return this.legChoice;
+	}
+	//------------------------------
 
     void Start()
     {
@@ -49,28 +65,41 @@ public class viceScript : MonoBehaviour {
         speechBubble.SetActive(false);
     }
 
-    public void torsoLeftPressed()
+	//ASSESSMENT4 ADDITION: Switched right and left increment/decrement to match leg buttons.
+	public void torsoRightPressed()
     {
         torsoChoice = (torsoChoice + 1) % torsos.Count;
-        torso.GetComponent<Image>().sprite = torsos[System.Math.Abs(torsoChoice)];
+        torso.GetComponent<Image>().sprite = torsos[torsoChoice];
     }
 
-    public void torsoRightPressed()
+	//ASSESSMENT4 ADDITION:
+	//Changes because test failed. Makes more sense that the left/right buttons traverse the list of torsos
+	//in opposite directions, not the same.
+	public void torsoLeftPressed()
     {
-        torsoChoice = (torsoChoice - 1) % torsos.Count;
-        torso.GetComponent<Image>().sprite = torsos[System.Math.Abs(torsoChoice)];
+		torsoChoice = (torsoChoice - 1);
+		if (torsoChoice < 0) {
+			torsoChoice = torsos.Count - 1;
+		}
+		torso.GetComponent<Image>().sprite = torsos[torsoChoice];
     }
 
     public void legsRightPressed()
     {
         legChoice = (legChoice + 1) % legs.Count;
-        leg.GetComponent<Image>().sprite = legs[System.Math.Abs(legChoice)];
+        leg.GetComponent<Image>().sprite = legs[legChoice];
     }
 
+	//ASSESSMENT4 ADDITION:
+	//Changes because test failed. Makes more sense that the left/right buttons traverse the list of legs
+	//in opposite directions, not the same.
     public void legsLeftPressed()
     {
-        legChoice = (legChoice - 1) % legs.Count;
-        leg.GetComponent<Image>().sprite = legs[System.Math.Abs(legChoice)];
+		legChoice = (legChoice - 1);
+		if (legChoice < 0) {
+			legChoice = legs.Count - 1;
+		}
+		leg.GetComponent<Image>().sprite = legs[legChoice];
     }
 
     public void submitGuess()
