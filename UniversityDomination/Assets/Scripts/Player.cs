@@ -194,7 +194,6 @@ public class Player : MonoBehaviour {
     public void ComputerTurn()
     {
         StartCoroutine( playComputerMove() );
-
     }
 
     public void Update()    //Checks for an active AI player that needs to complete their move
@@ -231,10 +230,8 @@ public class Player : MonoBehaviour {
 	        else if (selectedSector.GetUnit ().GetOwner () != selectedUnit.GetOwner ()) {
 				selectedSector.MoveIntoHostileUnit (selectedUnit, this.selectedSector.GetUnit ());
 			}
-			setMoving (false);
 		}
-		else
-			setMoving (false);
+		setMoving (false);
     }
 
     //================================================================================================

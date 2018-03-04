@@ -266,6 +266,63 @@ public class PlayerTest
     }
 
 	/*
+	 * ASSESSMENT4 ADDITION: added tests to the AI methods because they were not provided by the previous
+	 * team.
+	 */
+	[UnityTest]
+	public IEnumerator ComputerTurn_MakesAValidMove(){
+		//Tests that calling ComputerTurn allows the player to make a valid move.
+		Setup ();
+		game.InitializeMap ();
+
+		Player nonHumanPlayer = players [0]; //Player's isHuman() = true so that ComputerTurn isnt called automatically.
+		Sector unitsInitialSector = nonHumanPlayer.units [0].GetSector ();
+
+		nonHumanPlayer.ComputerTurn ();
+
+		yield return new WaitForSeconds (1); //wait for player to make their move.
+
+		int numberOfOwnedSectors = nonHumanPlayer.ownedSectors.Count;
+		Sector unitsNewSector = nonHumanPlayer.units [0].GetSector ();
+
+		//Tests that a valid move was made by calling ComputerTurn
+		Assert.AreEqual (2, numberOfOwnedSectors,"The computer player did not capture another sector");
+		Assert.AreNotSame (unitsInitialSector, unitsNewSector, "The unit did not move sectors");
+		Assert.Contains (unitsNewSector, unitsInitialSector.GetAdjacentSectors (), "The unit did not move into an adjacent sector");
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests to the AI methods because they were not provided by the previous
+	 * team.
+	 */
+	[UnityTest]
+	public IEnumerator ComputerTurn_InvalidTurnStateNoMoveIsMade(){
+		//Tests that calling ComputerTurn when the turnState is either EndOfTurn or NULL, means that the player does not make a move.
+		Setup ();
+		game.InitializeMap ();
+
+		Player nonHumanPlayer = players [0]; //Player's isHuman() = true so that ComputerTurn isnt called automatically.
+		Sector unitsInitialSector = nonHumanPlayer.units [0].GetSector ();
+		int previousNumberOfOwnedSectors = nonHumanPlayer.ownedSectors.Count;
+
+
+		game.SetTurnState (Game.TurnState.EndOfTurn); //Set the turnstate to EndOfTurn.
+		nonHumanPlayer.ComputerTurn (); 
+		yield return new WaitForSeconds (1); //wait for player to potentially make a move.
+
+		game.SetTurnState (Game.TurnState.NULL); //Set the turnstate to NULL.
+		nonHumanPlayer.ComputerTurn ();
+		yield return new WaitForSeconds (1); //wait for player to potentially make a move.
+
+		int currentNumberOfOwnedSectors = nonHumanPlayer.ownedSectors.Count;
+		Sector unitsNewSector = nonHumanPlayer.units [0].GetSector ();
+
+		//Tests that the state of the game has not changed.
+		Assert.AreEqual (previousNumberOfOwnedSectors, currentNumberOfOwnedSectors,"The computer player captured another sector.");
+		Assert.AreSame (unitsInitialSector, unitsNewSector, "The unit moved sectors in an invalid turnstate");
+	}
+
+	/*
 	 * ASSESSMENT4 ADDITION: added code which creates a PVC unit, places it within the scene and
 	 * links it to the game class.
 	 */

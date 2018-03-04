@@ -361,6 +361,53 @@ public class GameTest
     }
 
 	/*
+	 * ASSESSMENT4 ADDITION:
+	 * Added a unit test for the SpawnVice function, because one was not provided by the previous team.
+	 */
+	[UnityTest]
+	public IEnumerator SpawnVice_AddsAViceChancellorLandmarkToARandomSector()
+	{
+		Setup ();
+		//Test if calling spawnVice with the sectorID == -1 creates a VC landmark within one of the map's sectors.
+		game.spawnVice (-1);
+
+		//Counts the number of ViceChancellor landmarks within the map.
+		int numberOfVCs = 0;
+		foreach (Sector s in map.sectors) 
+		{
+			if (s.GetLandmark () != null)
+			{
+				if (s.GetLandmark ().GetResourceType () == Landmark.ResourceType.ViceChancellor) 
+				{
+					numberOfVCs++;
+				}
+			}
+		}
+		//Tests that the number of ViceChancellor landmarks is exactly 1.
+		Assert.NotZero (numberOfVCs, "Could not find any ViceChancellor landmarks");
+		Assert.AreEqual (1, numberOfVCs, "More than one ViceChancellor landmark was spawned");
+		yield return null;
+	}
+
+	[UnityTest]
+	public IEnumerator SpawnVice_AddsAViceChancellorLandmarkToASpecificSector()
+	{
+		Setup ();
+		//Tests that calling spawnVice with a sectorID > -1 creates a ViceChancellor landmark in the sector associated with the sectorID.
+
+		Sector aSector = map.sectors [3];
+
+		game.spawnVice (3);
+
+		Landmark viceLandmark = aSector.GetLandmark ();
+
+		Assert.NotNull (viceLandmark, "A landmark was not created in sector: "+aSector.name);
+		Assert.AreEqual (Landmark.ResourceType.ViceChancellor, viceLandmark.GetResourceType ());
+
+		yield return null;
+	}
+
+	/*
 	 * ASSESSMENT4 ADDITION: added code which creates a PVC unit, places it within the scene and
 	 * links it to the game class.
 	 */
