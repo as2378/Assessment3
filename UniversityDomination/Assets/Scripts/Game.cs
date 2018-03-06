@@ -217,9 +217,7 @@ public class Game : MonoBehaviour {
     }
 
     public void NextPlayer() {
-
-        // set the current player to the next player in the order
-
+		// set the current player to the next player in the order
 
         // deactivate the current player
         currentPlayer.SetActive(false);
@@ -251,10 +249,17 @@ public class Game : MonoBehaviour {
                 }
             }
         }
+		AssignPunishmentCard (currentPlayer);
     }
+
+	public void AssignPunishmentCard(Player player)
+	{
+		//ASSESSMENT4 ADDITION: gives the player a new punishment card.
+		Card nothingCard = new NothingCard(player);
+		player.AddPunishmentCard (nothingCard);
+	}
        
     public void NextTurnState() {
-
         // change the turn state to the next in the order,
         // or to initial turn state if turn is completed
 
@@ -275,7 +280,6 @@ public class Game : MonoBehaviour {
             default:
                 break;
         }
-
 		UpdateGUI();
     }
 
@@ -333,7 +337,6 @@ public class Game : MonoBehaviour {
     }
 
 	public void UpdateGUI() {
-
 		// update all players' GUIs
 		for (int i = 0; i < 4; i++) {
 			players [i].GetGui ().UpdateDisplay ();
@@ -341,10 +344,7 @@ public class Game : MonoBehaviour {
 	}
         
     public void Initialize () {
-        
         // initialize the game
-
-
         // create a specified number of human players
         CreatePlayers( staticPassArguments.humanPlayers );
 
@@ -365,7 +365,7 @@ public class Game : MonoBehaviour {
             currentPlayer = players[0];
             currentPlayer.GetGui().Activate();
             players[0].SetActive(true);
-
+			AssignPunishmentCard (currentPlayer);
         }
 
         //===========================

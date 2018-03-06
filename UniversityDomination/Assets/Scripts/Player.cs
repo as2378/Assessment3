@@ -27,6 +27,18 @@ public class Player : MonoBehaviour {
     [SerializeField] private bool human;
     [SerializeField] private bool active = false;
 
+	//ASSESSMENT4 ADDITIONS -------------------------------------------------
+	private List<Card> punishmentCards = new List<Card>(); 
+
+	public List<Card> GetPunishmentCards(){
+		return punishmentCards;
+	}
+	public void AddPunishmentCard(Card card){
+		if (punishmentCards.Count < 5) {
+			punishmentCards.Add (card);
+		}
+	}
+	//-----------------------------------------------------------------------
 
     public Game GetGame() {
         return game;
