@@ -8,6 +8,66 @@ public class CardDeck : MonoBehaviour {
 	public GameObject menuBackground;
 	public Game game;
 	private Dictionary<GameObject,Card> cardSlots;
+    private List<Card> activeCards = new List<Card>();
+
+
+	public List<Card> GetActiveCards()
+	{
+		return activeCards;
+	}
+
+	public void SetActivateCard(Card card)
+	{
+		//Adds a card to the activeCard list
+		activeCards.Add (card);
+	}
+
+	public void RemoveActiveCard(Card card)
+	{
+		if (activeCards.Contains (card)) 
+		{
+			activeCards.Remove (card);
+		}
+	}
+		
+	public void AssignPunishmentCard(Player player)
+	{
+		//ASSESSMENT4 ADDITION: gives the player a new punishment card.
+
+		int randInt = Random.Range (0, 100);
+
+		if (randInt < 50) 
+		{
+			Card nothingCard = new NothingCard (player);
+			player.AddPunishmentCard (nothingCard);
+			return;
+		}
+		if (randInt < 100) 
+		{
+			Card freshersFluCard = new FreshersFluCard (player);
+			player.AddPunishmentCard (freshersFluCard);
+			return;
+		}
+	}
+
+	public void DeactivatePunishmentCards(Player player)
+	{
+		//Deactivates all active cards that were played by the player if their turn count reaches 0.
+		for(int i = 0;i < activeCards.Count; i++)
+		{
+			Card card = activeCards [i];
+			if (card.GetOwner () == player) 
+			{
+				card.SetTurnCount (card.GetTurnCount () - 1); //Decrease turn count of active card.
+				//if turn count reaches 0, deactivate card.
+				if (card.GetTurnCount () == 0) 
+				{
+					card.deactivatePunishment ();
+					activeCards.Remove (card);
+				}
+			}
+		}
+	}
 
 	void Start () {
 		//Goes through every child in menu and adds the cards to the cardSlot dictionary.
@@ -23,7 +83,8 @@ public class CardDeck : MonoBehaviour {
 	}
 
 	public void ShowMenu(){
-		if (game.GetTurnState () != Game.TurnState.Move1)
+		//Disable the punishment card menu if it isnt the first move of a turn or the current player is an AI.
+		if (game.GetTurnState () != Game.TurnState.Move1 || game.currentPlayer.IsHuman() == false)
 			return;
 		
 		Player currentPlayer = game.currentPlayer;
@@ -61,11 +122,14 @@ public class CardDeck : MonoBehaviour {
 	{
 		//Click event for the card slots
 		Card card = cardSlots [slot];
+
 		card.activatePunishment ();	// activates the card's effect.
+		activeCards.Add (card); // adds card to the active list
 
 		//Removes the card and hides the menu
 		card.GetOwner ().GetPunishmentCards ().Remove (card);
-		card.SetOwner (null);
+		game.EndTurn ();
+	
 		HideMenu ();
 	}
 

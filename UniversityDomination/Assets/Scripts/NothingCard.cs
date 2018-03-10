@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class NothingCard : Card {
 
-	public NothingCard (Player owner) : base (owner, Resources.Load<Sprite> ("cards/Nothing")){
+	public NothingCard (Player owner) : base (owner, Resources.Load<Sprite> ("cards/Nothing"), 1){
 		return;
 	}
 

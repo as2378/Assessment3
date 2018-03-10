@@ -127,13 +127,15 @@ public class Player : MonoBehaviour {
             {
                 this.beer += landmark.GetAmount();
                 if (previousOwner != null)
-                    previousOwner.beer -= landmark.GetAmount();
+					//ASSESSMENT4 ADDITION: avoid bonuses from becoming negative when FreshersFlu card is played.
+					previousOwner.beer = Mathf.Max(previousOwner.beer - landmark.GetAmount(), 0);
             }
             else if (landmark.GetResourceType() == Landmark.ResourceType.Knowledge)
             {
                 this.knowledge += landmark.GetAmount();
-                if (previousOwner != null)
-                    previousOwner.knowledge -= landmark.GetAmount();
+				if (previousOwner != null)
+					//ASSESSMENT4 ADDITION: avoid bonuses from becoming negative when FreshersFlu card is played.
+					previousOwner.knowledge = Mathf.Max (previousOwner.knowledge - landmark.GetAmount (), 0);
             }
         }
     }

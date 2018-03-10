@@ -271,8 +271,8 @@ RectTransform:
   - {fileID: 722604579}
   - {fileID: 1507163497}
   - {fileID: 686189294}
-  - {fileID: 1872996203}
   - {fileID: 1476496543}
+  - {fileID: 1872996203}
   - {fileID: 997499916}
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -2233,15 +2233,15 @@ RectTransform:
   m_GameObject: {fileID: 244000951}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -3.5448608, z: 0}
-  m_LocalScale: {x: 13.29334, y: 6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_Children: []
   m_Father: {fileID: 2031876687}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -3.544876}
-  m_SizeDelta: {x: -1098.1, y: -420.1}
+  m_SizeDelta: {x: 1200, y: 550}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &252651568 stripped
 GameObject:
@@ -3065,6 +3065,7 @@ MonoBehaviour:
   - {fileID: 1369005491}
   gameMap: {fileID: 1549731849}
   currentPlayer: {fileID: 78266717}
+  cardDeck: {fileID: 2031876688}
   viceChancellorGameObj: {fileID: 656712111}
   winner: {fileID: 0}
   winnerScreen: {fileID: 997499915}
@@ -11286,7 +11287,7 @@ RectTransform:
   m_Children:
   - {fileID: 2125081633}
   m_Father: {fileID: 10664832}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -14212,7 +14213,7 @@ RectTransform:
   - {fileID: 569439497}
   - {fileID: 1476851481}
   m_Father: {fileID: 10664832}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -15491,12 +15492,12 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
-  m_ScreenMatchMode: 1
-  m_MatchWidthOrHeight: 0
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.7
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -15529,7 +15530,7 @@ RectTransform:
   m_GameObject: {fileID: 2031876683}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 599, y: 260.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0225642, y: 1.0225642, z: 1.0225642}
   m_Children:
   - {fileID: 244000954}
   - {fileID: 1206110634}

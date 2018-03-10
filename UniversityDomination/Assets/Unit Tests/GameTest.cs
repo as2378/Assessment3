@@ -460,17 +460,24 @@ public class GameTest
         game.EnableTestMode();
 
 		//ASSESSMENT4 ADDITION:
-		GameObject winScreen = new GameObject();
+		GameObject winScreen = new GameObject("winScreen");
 		winScreen.AddComponent<UnityEngine.UI.Text> ();
-		winScreen.name = "winScreen";
 		game.winnerScreen = winScreen;
 
-		GameObject pvc = new GameObject ();
+		GameObject pvc = new GameObject ("pvc");
 		pvc.AddComponent<Landmark> ();
 		pvc.AddComponent<MeshRenderer> ();
 		pvc.AddComponent<MeshCollider> ();
-		pvc.name = "PVC";
 		game.viceChancellorGameObj = pvc;
+
+		GameObject cardDeck = new GameObject ("PunishmentCardMenu");
+		GameObject cardMenu = new GameObject ("Menu");
+		cardMenu.transform.parent = cardDeck.transform;
+		cardDeck.SetActive (false);
+		CardDeck cd = cardDeck.AddComponent<CardDeck> ();
+		cd.menu = cardMenu;
+		cardDeck.SetActive (true);
+		game.cardDeck = cd;
     }
 
     private void ClearSectorsAndUnitsOfAllPlayers() {

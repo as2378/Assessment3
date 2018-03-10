@@ -90,7 +90,7 @@ public class PlayerTest
 
         // get knowledge amounts for each player before capture
         int attackerKnowledgeBeforeCapture = playerA.GetKnowledge();
-        int defenderKnowledgeBeforeCapture = playerB.GetKnowledge();
+        int defenderKnowledgeBeforeCapture = playerB.GetKnowledge() + 2;
         Player previousOwner = landmarkedSector.GetOwner();
 
         playerA.Capture(landmarkedSector);

@@ -13,7 +13,7 @@ public class Game : MonoBehaviour {
     public Player[] players;
 	public GameObject gameMap;
     public Player currentPlayer;
-
+	public CardDeck cardDeck;
 
  
     public GameObject viceChancellorGameObj;    //Set in editor, stores vice chance game object
@@ -25,8 +25,6 @@ public class Game : MonoBehaviour {
     [SerializeField] private TurnState turnState;
     [SerializeField] private bool gameFinished = false;
     [SerializeField] private bool testMode = false;
-
-
 
     public TurnState GetTurnState() {
         return turnState;
@@ -249,15 +247,10 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-		AssignPunishmentCard (currentPlayer);
+		cardDeck.DeactivatePunishmentCards (currentPlayer); //Deactivates punishment effect after one turn.
+		cardDeck.AssignPunishmentCard (currentPlayer);
     }
 
-	public void AssignPunishmentCard(Player player)
-	{
-		//ASSESSMENT4 ADDITION: gives the player a new punishment card.
-		Card nothingCard = new NothingCard(player);
-		player.AddPunishmentCard (nothingCard);
-	}
        
     public void NextTurnState() {
         // change the turn state to the next in the order,
@@ -285,9 +278,21 @@ public class Game : MonoBehaviour {
 
     public void EndTurn() {
 
-        // end the current turn
-
+        // end the current turn and make sure that none of the units are selected
         turnState = TurnState.EndOfTurn;
+
+		foreach (Player player in players) 
+		{
+			//scan through each unit of each player
+			foreach (Unit unit in player.units) 
+			{
+				// if a selected unit is found, deselect it.
+				if (unit.IsSelected () == true)
+				{
+					unit.Deselect ();
+				}
+			}
+		}
     }
 
     public Player GetWinner() {
@@ -365,7 +370,7 @@ public class Game : MonoBehaviour {
             currentPlayer = players[0];
             currentPlayer.GetGui().Activate();
             players[0].SetActive(true);
-			AssignPunishmentCard (currentPlayer);
+			cardDeck.AssignPunishmentCard (currentPlayer);
         }
 
         //===========================
