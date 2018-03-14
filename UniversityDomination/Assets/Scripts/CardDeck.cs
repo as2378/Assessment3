@@ -32,7 +32,7 @@ public class CardDeck : MonoBehaviour {
 		
 	public void AssignPunishmentCard(Player player)
 	{
-		//ASSESSMENT4 ADDITION: gives the player a new punishment card.
+		//gives the player a new punishment card.
 
 		int randInt = Random.Range (0, 100);
 
@@ -104,6 +104,12 @@ public class CardDeck : MonoBehaviour {
 				cardSlots [freeCardSlot] = cards [i];	
 				freeCardSlot.GetComponent<Image> ().sprite = cards [i].cardImage;
 				freeCardSlot.GetComponent<Button> ().interactable = true;
+
+				//If another of the same card is active, deactivate the cardslot.
+				if (HasActiveCardOfType (cards [i].GetType ())) 
+				{
+					freeCardSlot.GetComponent<Button> ().interactable = false;
+				}
 			} 
 			else 
 			{
@@ -117,6 +123,20 @@ public class CardDeck : MonoBehaviour {
 		menuBackground.SetActive (true);
 		game.gameMap.SetActive (false);
 	}
+
+	public bool HasActiveCardOfType(System.Type cardType)
+	{
+		//Checks to the if a card with the same type "cardType" is currently active.
+		foreach (Card activeCard in this.activeCards) 
+		{
+			if (activeCard.GetType () == cardType) 
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	public void ActivateCard(GameObject slot)
 	{

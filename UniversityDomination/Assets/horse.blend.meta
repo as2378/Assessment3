@@ -13,13 +13,21 @@ ModelImporter:
     400004: //RootNode
     2300000: Curve_MeshPart0
     2300002: Curve_MeshPart1
+    2300004: //RootNode
     3300000: Curve_MeshPart0
     3300002: Curve_MeshPart1
+    3300004: //RootNode
     4300000: Curve_MeshPart0
     4300002: Curve_MeshPart1
+    4300004: Plane
     7400000: Default Take
     9500000: //RootNode
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material_001
+    second: {fileID: 2100000, guid: e7cf3b2e5d4ba1a409ef73a161828a64, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

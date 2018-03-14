@@ -104,7 +104,16 @@ public class Unit : MonoBehaviour {
         // set the owner, level, and color of the unit
         owner = player;
         level = 1;
-        color = Color.white;
+
+		//ASSESSMENT4 ADDITION- checks if FreshersFluCard is active. If so the unit is coloured green.
+		if (player.GetGame ().cardDeck.HasActiveCardOfType (typeof(FreshersFluCard))) 
+		{
+			color = new Color (0.62f, 0.71f, 0.47f);
+		} 
+		else 
+		{
+			color = Color.white;
+		}
 
         // set the material color to the player color
         GetComponent<Renderer>().material.color = color;
