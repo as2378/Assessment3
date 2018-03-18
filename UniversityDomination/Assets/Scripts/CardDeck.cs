@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * ASSESSMENT4 ADDITION:
+ * This class is used to handle the visual elements of the card system, as well as provide a way of
+ * assigning, activating and deactivating cards.
+ */
 public class CardDeck : MonoBehaviour {
 	public GameObject menu;
 	public GameObject menuBackground;
@@ -10,13 +15,18 @@ public class CardDeck : MonoBehaviour {
 	private Dictionary<GameObject,Card> cardSlots;
     private List<Card> activeCards = new List<Card>();
 
+	public List<GameObject> GetCardSlots()
+	{
+		//Returns a list containing the card slots.
+		return new List<GameObject>(cardSlots.Keys);
+	}
 
 	public List<Card> GetActiveCards()
 	{
 		return activeCards;
 	}
 
-	public void SetActivateCard(Card card)
+	public void SetActiveCard(Card card)
 	{
 		//Adds a card to the activeCard list
 		activeCards.Add (card);
@@ -53,19 +63,25 @@ public class CardDeck : MonoBehaviour {
 	public void DeactivatePunishmentCards(Player player)
 	{
 		//Deactivates all active cards that were played by the player if their turn count reaches 0.
-		for(int i = 0;i < activeCards.Count; i++)
+
+		List<Card> cardsToDeactivate = new List<Card> ();
+		foreach (Card activeCard in activeCards) 
 		{
-			Card card = activeCards [i];
-			if (card.GetOwner () == player) 
+			if (activeCard.GetOwner () == player) 
 			{
-				card.SetTurnCount (card.GetTurnCount () - 1); //Decrease turn count of active card.
-				//if turn count reaches 0, deactivate card.
-				if (card.GetTurnCount () == 0) 
+				activeCard.SetTurnCount (activeCard.GetTurnCount () - 1); //Decrease turn count of active card.
+				//if turn count reaches 0, add to the cardsToDeactivate list.
+				if (activeCard.GetTurnCount () == 0) 
 				{
-					card.deactivatePunishment ();
-					activeCards.Remove (card);
+					cardsToDeactivate.Add (activeCard);
 				}
 			}
+		}
+		foreach (Card activeCard in cardsToDeactivate) 
+		{
+			//Deactivate Card
+			activeCard.deactivatePunishment ();
+			activeCards.Remove (activeCard);
 		}
 	}
 
@@ -89,8 +105,6 @@ public class CardDeck : MonoBehaviour {
 		
 		Player currentPlayer = game.currentPlayer;
 		List<Card> cards = currentPlayer.GetPunishmentCards ();
-
-		//In Game, first player first turn does not assign a card
 
 		//Assigns the player's cards to the card slots in the deck.
 		List<GameObject> slotList = new List<GameObject> (cardSlots.Keys);
@@ -140,7 +154,7 @@ public class CardDeck : MonoBehaviour {
 
 	public void ActivateCard(GameObject slot)
 	{
-		//Click event for the card slots
+		//Click event for the card slots.
 		Card card = cardSlots [slot];
 
 		card.activatePunishment ();	// activates the card's effect.

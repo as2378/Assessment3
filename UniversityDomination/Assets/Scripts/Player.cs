@@ -34,7 +34,10 @@ public class Player : MonoBehaviour {
 		return punishmentCards;
 	}
 	public void AddPunishmentCard(Card card){
-		if (punishmentCards.Count < 5) {
+		//Adds card to the player's punishmentCards list if the list isn't full and the card is
+		//owned by the player.
+		if (punishmentCards.Count < 5 && card.GetOwner() == this) 
+		{
 			punishmentCards.Add (card);
 		}
 	}

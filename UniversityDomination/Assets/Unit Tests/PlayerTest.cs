@@ -2,6 +2,7 @@
 using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerTest 
 {
@@ -17,18 +18,12 @@ public class PlayerTest
         game.InitializeMap();
 
         Player previousOwner = map.sectors[0].GetOwner();
-       // bool run = false; // used to decide whether to check previous players sector list (if no previous owner, do not look in list)
-
-       // if (map.sectors[0].GetOwner() != null)
-       // {            
-       //     run = true;
-       // }
 
         game.players[0].Capture(map.sectors[0]);
         Assert.AreSame(map.sectors[0].GetOwner(), game.players[0]); // owner stored in sector
         Assert.IsTrue(game.players[0].ownedSectors.Contains(map.sectors[0])); // sector is stored as owned by the player
 
-		if (/*run == true*/previousOwner != null) // if sector had previous owner
+		if (previousOwner != null) // if sector had previous owner
         {
             Assert.IsFalse(previousOwner.ownedSectors.Contains(map.sectors[0])); // sector has been removed from previous owner list
         }
@@ -320,6 +315,87 @@ public class PlayerTest
 		//Tests that the state of the game has not changed.
 		Assert.AreEqual (previousNumberOfOwnedSectors, currentNumberOfOwnedSectors,"The computer player captured another sector.");
 		Assert.AreSame (unitsInitialSector, unitsNewSector, "The unit moved sectors in an invalid turnstate");
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the new punishment card features.
+	 */
+	[UnityTest]
+	public IEnumerator GetPunishmentCards_NewPlayerReturnsEmptyCardList(){
+		//Tests that when a new player is created, GetPunishmentCards returns an empty list of cards.
+		GameObject playerObject = new GameObject ("TestPlayer");
+		Player player = playerObject.AddComponent<Player> ();
+
+		List<Card> expectedList = new List<Card> ();
+		List<Card> actualList = player.GetPunishmentCards ();
+
+		Assert.AreEqual (expectedList, actualList);
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the new punishment card features.
+	 */
+	[UnityTest]
+	public IEnumerator AddPunishmentCard_CorrectlyAddsCardToList(){
+		//Tests if AddPunishmentCard adds the card to the punishmentCards list when the card is owned by the player
+		// and the punishmentCards list is empty.
+
+		GameObject playerObject = new GameObject ("TestPlayer");
+		Player testPlayer = playerObject.AddComponent<Player> ();
+
+		Card testCard = new NothingCard (testPlayer);
+
+		List<Card> expectedList = new List<Card>(new Card[]{testCard}); //Expect a list containing TestCard.
+
+		testPlayer.GetPunishmentCards ().Clear (); //Ensure list is clear.
+		testPlayer.AddPunishmentCard(testCard);
+
+		List<Card> actualList = testPlayer.GetPunishmentCards ();
+
+		Assert.AreEqual (expectedList, actualList);
+		Assert.AreSame (testCard, actualList [0]);
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the new punishment card features.
+	 */
+	[UnityTest]
+	public IEnumerator AddPunishmentCard_DoesNotAddCardIfListIsFull(){
+		//Tests that the card is not added to a player's punishmentCards list if it already contains 5 cards.
+		GameObject playerObject = new GameObject ("TestPlayer");
+		Player testPlayer = playerObject.AddComponent<Player> ();
+
+		testPlayer.GetPunishmentCards ().Clear (); //Ensure list is clear.
+		//Give the player 5 cards.
+		for (int i = 0; i < 5; i++) {
+			testPlayer.GetPunishmentCards ().Add (new NothingCard (testPlayer));
+		}
+
+		Card testCard = new FreshersFluCard (testPlayer);
+		testPlayer.AddPunishmentCard (testCard); //Try to add the testCard.
+
+		Assert.False (testPlayer.GetPunishmentCards ().Contains (testCard)); //Test whether testCard has been added or not.
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the new punishment card features.
+	 */
+	[UnityTest]
+	public IEnumerator AddPunishmentCard_DoesNotAddCardIfCardIsNotOwnedByPlayer(){
+		//Tests that cards are not added to a player's punishmentCards list if the player does not own the card.
+		GameObject playerObject1 = new GameObject ("TestPlayer_1");
+		GameObject playerObject2 = new GameObject ("TestPlayer_2");
+		Player currentPlayer = playerObject1.AddComponent<Player> ();
+		Player otherPlayer = playerObject2.AddComponent<Player> ();
+
+		Card testCard = new FreshersFluCard (otherPlayer);
+		currentPlayer.AddPunishmentCard (testCard); //Try to add the testCard.
+
+		Assert.False (currentPlayer.GetPunishmentCards ().Contains (testCard)); //Test whether testCard has been added or not.
+		yield return null;
 	}
 
 	/*

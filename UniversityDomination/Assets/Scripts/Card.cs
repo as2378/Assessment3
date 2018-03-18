@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//ASSESSMENT4 ADDITIONS
 public abstract class Card {
 	public Sprite cardImage; //Image of the card
 	private Player owner;	 //Card's owner
@@ -37,7 +38,11 @@ public abstract class Card {
 		Debug.Log ("Card Deactivated");
 		this.owner = null;
 	}
+
+	public override string ToString()
+	{
+		return "Card: "+ this.GetType ().ToString () + " ownedBy: " + owner.name;
+	}
 		
 	public abstract void activatePunishment();
-
 }

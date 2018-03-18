@@ -106,7 +106,8 @@ public class Unit : MonoBehaviour {
         level = 1;
 
 		//ASSESSMENT4 ADDITION- checks if FreshersFluCard is active. If so the unit is coloured green.
-		if (player.GetGame ().cardDeck.HasActiveCardOfType (typeof(FreshersFluCard))) 
+		CardDeck cardDeck = player.GetGame().cardDeck;
+		if (cardDeck != null && cardDeck.HasActiveCardOfType (typeof(FreshersFluCard))) 
 		{
 			color = new Color (0.62f, 0.71f, 0.47f);
 		} 
