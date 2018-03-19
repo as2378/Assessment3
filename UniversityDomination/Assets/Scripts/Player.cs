@@ -207,18 +207,66 @@ public class Player : MonoBehaviour {
     {
         this.moving = moving;
     }
-
+		
     public void ComputerTurn()
     {
         StartCoroutine( playComputerMove() );
     }
 
+	/*
+	 * ASSESSMENT4 ADDITION: This is used to allow the AI players to play punishment cards.
+	 * It begins by checking if the AI is allowed to play a card, then finds & plays a random card out of the valid cards it owns.
+	 */
+	public void ComputerPlayPunishmentCard()
+	{
+		//Does the AI own any punishment cards and is the turnstate equal to move1?
+		if (this.punishmentCards.Count != 0 && game.GetTurnState () == Game.TurnState.Move1) 
+		{
+			//Out of all the cards owned by the AI, find the valid ones.
+			List<Card> availableCards = new List<Card> ();
+			foreach (Card card in this.punishmentCards) 
+			{
+				if (game.cardDeck.HasActiveCardOfType (card.GetType ()) == false) 
+				{
+					availableCards.Add (card);
+				}
+			}
+			//Check if the AI is allowed to play a punishment card.
+			if (availableCards.Count != 0) 
+			{
+				//Get one of the available cards and activate it.
+				int cardIndex = Random.Range (0, availableCards.Count - 1);
+				Card cardToPlay = availableCards [cardIndex];
+
+				cardToPlay.activatePunishment (); //Activate the card.
+				game.cardDeck.SetActiveCard (cardToPlay);
+				this.punishmentCards.Remove (cardToPlay);
+				game.EndTurn ();
+				setMoving (false);
+				return;
+			} 
+		}
+		//If the AI is unable to play any punishment cards, make a normal move.
+		ComputerTurn ();
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: Added the option for AI to play punishment cards
+	 */
     public void Update()    //Checks for an active AI player that needs to complete their move
     {
         if (IsHuman() == false && IsActive() && IsMoving() == false)
         {
             setMoving(true);
-            ComputerTurn();
+			// 20% chance of the AI playing a punishment card.
+			if (Random.Range (1, 10) < 3) 
+			{
+				ComputerPlayPunishmentCard ();
+			} 
+			else 
+			{
+				ComputerTurn ();
+			}
         }
     }
 
@@ -231,11 +279,11 @@ public class Player : MonoBehaviour {
 	{
 		if (game.GetTurnState () != Game.TurnState.EndOfTurn && game.GetTurnState () != Game.TurnState.NULL)  //ADDITION
 		{
-			selectedUnit = units [Random.Range (0, units.Count)];                                                                                         // Chooses a random unit that can move
+			selectedUnit = units [Random.Range (0, units.Count)];            //Chooses a random unit that can move
 
 			yield return new WaitForSeconds (1);
 
-			selectedSector = selectedUnit.GetSector ().GetAdjacentSectors () [Random.Range (0, selectedUnit.GetSector ().GetAdjacentSectors ().Length)];      // Chooses a random sector that the selected unit can move into
+			selectedSector = selectedUnit.GetSector ().GetAdjacentSectors () [Random.Range (0, selectedUnit.GetSector ().GetAdjacentSectors ().Length)]; // Chooses a random sector that the selected unit can move into
 			if (selectedSector.GetUnit () == null) { // if the sector is empty 
 				selectedSector.MoveIntoUnoccupiedSector (selectedUnit);
 			}
@@ -250,6 +298,5 @@ public class Player : MonoBehaviour {
 		}
 		setMoving (false);
     }
-
     //================================================================================================
 }

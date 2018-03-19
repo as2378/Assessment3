@@ -10,6 +10,7 @@ public class PlayerTest
     private Map map;
 	private Player[] players;
 	private PlayerUI[] gui;
+	private CardDeck cardDeck;
 
     [UnityTest]
     public IEnumerator CaptureSector_ChangesOwner() {
@@ -318,6 +319,119 @@ public class PlayerTest
 	}
 
 	/*
+	 * ASSESSMENT4 ADDITION: added tests for the AI playing punishment cards.
+	 */
+	[UnityTest]
+	public IEnumerator ComputerPlayPunishmentCard_CardPlayed(){
+		//Tests to see if ComputerPlayPunishmentCard correctly plays a card.
+		Setup();
+		game.SetTurnState (Game.TurnState.Move1);
+		//Add a test card to the current player.
+		Player testPlayer = game.currentPlayer;
+		Card testCard = new FreshersFluCard (testPlayer);
+		testPlayer.AddPunishmentCard (testCard);
+
+		testPlayer.ComputerPlayPunishmentCard (); //Try to play a card.
+
+		//Test if testCard has been played
+		Assert.Contains (testCard, cardDeck.GetActiveCards ());
+		Assert.IsFalse (testPlayer.GetPunishmentCards ().Contains (testCard));
+		Assert.AreEqual (Game.TurnState.EndOfTurn, game.GetTurnState ());
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the AI playing punishment cards.
+	 */
+	[UnityTest]
+	public IEnumerator ComputerPlayPunishmentCard_MakesNormalMoveWhenNoCardsOwned(){
+		//Tests that the AI makes a normal move when ComputerPlayPunishmentCard is called when the AI doesn't have any cards.
+		Setup();
+		game.InitializeMap ();
+		Player testPlayer = game.currentPlayer;
+		Sector unitsInitialSector = testPlayer.units [0].GetSector ();
+
+		testPlayer.GetPunishmentCards ().Clear (); //Ensure testPlayer does not have any cards.
+		testPlayer.ComputerPlayPunishmentCard();
+
+		yield return new WaitForSeconds (1); //wait for player to make their move.
+
+		int numberOfOwnedSectors = testPlayer.ownedSectors.Count;
+		Sector unitsNewSector = testPlayer.units [0].GetSector ();
+
+		//Tests that a normal move was made.
+		Assert.AreEqual (2, numberOfOwnedSectors,"The computer player did not capture another sector");
+		Assert.AreNotSame (unitsInitialSector, unitsNewSector, "The unit did not move sectors");
+		Assert.Contains (unitsNewSector, unitsInitialSector.GetAdjacentSectors (), "The unit did not move into an adjacent sector");
+	}
+
+	[UnityTest]
+	public IEnumerator ComputerPlayPunishmentCard_MakesNormalMoveWhenInvalidTurnState(){
+		//Tests that the AI makes a normal move when ComputerPlayPunishmentCard is called and the turnstate is not Move1.
+		Setup();
+		game.InitializeMap ();
+		Player testPlayer = game.currentPlayer;
+		Sector unitsInitialSector = testPlayer.units [0].GetSector ();
+		Card testCard = new NothingCard (testPlayer);
+
+		testPlayer.AddPunishmentCard (testCard); 	//Add a card to testPlayer...
+		game.SetTurnState (Game.TurnState.Move2);	//...but make the TurnState Move2.
+		testPlayer.ComputerPlayPunishmentCard();
+
+		yield return new WaitForSeconds (1); //wait for player to make their move.
+
+		int numberOfOwnedSectors = testPlayer.ownedSectors.Count;
+		Sector unitsNewSector = testPlayer.units [0].GetSector ();
+
+		//Tests that a normal move was made.
+		Assert.IsFalse(cardDeck.GetActiveCards().Contains(testCard));
+		Assert.AreEqual (2, numberOfOwnedSectors,"The computer player did not capture another sector");
+		Assert.AreNotSame (unitsInitialSector, unitsNewSector, "The unit did not move sectors");
+		Assert.Contains (unitsNewSector, unitsInitialSector.GetAdjacentSectors (), "The unit did not move into an adjacent sector");
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION: added tests for the AI playing punishment cards.
+	 */
+	[UnityTest]
+	public IEnumerator ComputerPlayPunishmentCard_MakesNormalMoveWhenAllCardsOwnedAreActive(){
+		//Tests that the AI makes a normal move if ComputerPlayPunishmentCard is called when all of the cards
+		//owned by the AI are already active in the game.
+		Setup();
+		game.InitializeMap ();
+
+		//Activate a NothingCard and a FreshersFluCard.
+		cardDeck.SetActiveCard(new NothingCard(null));
+		cardDeck.SetActiveCard (new FreshersFluCard (null));
+
+		Player testPlayer = game.currentPlayer;
+		Sector unitsInitialSector = testPlayer.units [0].GetSector ();
+		Card testCard1 = new NothingCard (testPlayer);
+		Card testCard2 = new FreshersFluCard (testPlayer);
+
+		//Add the testCards to the testPlayer
+		testPlayer.AddPunishmentCard (testCard1);
+		testPlayer.AddPunishmentCard (testCard2);
+
+		testPlayer.ComputerPlayPunishmentCard(); //Try to play a punishment card.
+
+		yield return new WaitForSeconds (1); //wait for the player to make their move.
+
+		int numberOfOwnedSectors = testPlayer.ownedSectors.Count;
+		Sector unitsNewSector = testPlayer.units [0].GetSector ();
+
+		//Tests that a normal move was made.
+		Assert.IsFalse(cardDeck.GetActiveCards().Contains(testCard1),"The AI's NothingCard was activated");
+		Assert.IsFalse(cardDeck.GetActiveCards().Contains(testCard2),"The AI's FreshersFluCard was activated");
+		Assert.AreEqual (2, numberOfOwnedSectors,"The computer player did not capture another sector");
+		Assert.AreNotSame (unitsInitialSector, unitsNewSector, "The unit did not move sectors");
+		Assert.Contains (unitsNewSector, unitsInitialSector.GetAdjacentSectors (), "The unit did not move into an adjacent sector");
+
+		yield return null;
+	}
+
+
+	/*
 	 * ASSESSMENT4 ADDITION: added tests for the new punishment card features.
 	 */
 	[UnityTest]
@@ -421,18 +535,21 @@ public class PlayerTest
 		// the "GUI" asset contains the PlayerUI object for each Player
 		gui = MonoBehaviour.Instantiate(Resources.Load<GameObject>("GUI")).GetComponentsInChildren<PlayerUI>();
 
-		// the "Scenery" asset contains the camera and light source of the 4x4 Test
-		// can uncomment to view scene as tests run, but significantly reduces speed
-		//MonoBehaviour.Instantiate(Resources.Load<GameObject>("Scenery"));
+		// ASSESSMENT4 ADDITION: load in the PunishmentCardGUI
+		cardDeck = MonoBehaviour.Instantiate (Resources.Load<GameObject> ("PunishmentCardGUI")).GetComponent<CardDeck> ();
 
         // establish references from game to players & map
         game.players = players;
         game.gameMap = map.gameObject;
-        game.EnableTestMode();
+        
 
         // establish references from map to game & sectors (from children)
         map.game = game;
         map.sectors = map.gameObject.GetComponentsInChildren<Sector>();
+
+		//ASSESSMENT4 ADDITION: establish reference to cardDeck & game
+		cardDeck.game = game;
+		game.cardDeck = cardDeck;
 
         // establish references to SSB 64 colors for each player
         players[0].SetColor(Color.red);
@@ -443,9 +560,9 @@ public class PlayerTest
 		// establish references to a PlayerUI and Game for each player & initialize GUI
 		for (int i = 0; i < players.Length; i++) 
 		{
-			players[i].SetGui(gui[i]);
-			players[i].SetGame(game);
-			players[i].GetGui().Initialize(players[i], i + 1);
+			players [i].SetGui(gui[i]);
+			players [i].SetGame(game);
+			players [i].GetGui().Initialize(players[i], i + 1);
 			players [i].SetHuman (true);
 		}
 		// enable game's test mode
@@ -463,6 +580,7 @@ public class PlayerTest
 		pvc.AddComponent<MeshCollider> ();
 		pvc.name = "PVC";
 		game.viceChancellorGameObj = pvc;
+		game.currentPlayer = players [0];
     }
 
 	/*

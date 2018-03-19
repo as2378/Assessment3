@@ -247,6 +247,8 @@ public class CardDeckTest {
 			Assert.IsFalse(cardSlot.GetComponent<Button> ().IsInteractable());
 			Assert.IsNull (cardSlot.GetComponent<Image> ().sprite);
 		}
+
+		cardDeck.HideMenu (); //Hide the menu to reset the test scene.
 	}
 
 	[UnityTest]
@@ -276,6 +278,8 @@ public class CardDeckTest {
 		//Test if card1's slot is enabled and card2's slot is disabled.
 		Assert.IsTrue(cardSlots[0].GetComponent<Button>().IsInteractable());
 		Assert.IsFalse (cardSlots [1].GetComponent<Button> ().IsInteractable ());
+
+		cardDeck.HideMenu (); //Hide the menu to reset the test scene.
 	}
 
 	[UnityTest]
