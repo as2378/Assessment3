@@ -50,13 +50,31 @@ public class GameControl : MonoBehaviour
             //write player info
             foreach (Player player in game.players)
             {
-                writer.WriteLine( player.name + "Beer:" + player.GetBeer());
-                writer.WriteLine( player.name + "Knowledge:" + player.GetKnowledge());
-                writer.WriteLine( player.name + "IsHuman:" + player.IsHuman());
-                writer.WriteLine( player.name + "IsActive:" + player.IsActive());
+                writer.WriteLine(player.name + "Beer:" + player.GetBeer());
+                writer.WriteLine(player.name + "Knowledge:" + player.GetKnowledge());
+                writer.WriteLine(player.name + "IsHuman:" + player.IsHuman());
+                writer.WriteLine(player.name + "IsActive:" + player.IsActive());
+
+                // ASSESSMENT 4 ADDITION (22/03/2018)
+                writer.Write(player.name + "PunishmentCards:");
+
+                List<Card> cards = player.GetPunishmentCards();
+
+                for(int i = 0; i < cards.Count; i++)
+                {
+                    writer.Write(cards[i].GetType().Name);
+
+                    if(i + 1 != cards.Count)
+                    {
+                        writer.Write(",");
+                    }
+                }
+
+                writer.WriteLine();
+                //------------------------------------
             }
 
-            //get array of sectors
+            // write sector info
             Sector[] sectors = map.GetComponentsInChildren<Sector>();
 
             foreach (Sector sector in sectors)
@@ -96,12 +114,49 @@ public class GameControl : MonoBehaviour
                 }
                 else
                 {
-                    writer.WriteLine("unitOwner:"+sector.GetUnit().GetOwner().name+":"+sector.GetUnit().GetLevel());
+                    //ASSESSMENT 4 ADDITION (22/03/2018)
+                    Color unitColor = sector.GetUnit().GetColor();
+                    string ownerName = sector.GetUnit().GetOwner().name;
+                    int unitLevel = sector.GetUnit().GetLevel();
+
+                    writer.WriteLine("unitOwner:" + ownerName + ":" + unitLevel + ":" + unitColor.r + ":" + unitColor.g + ":" + unitColor.b);
+                    //----------------------------------
                 }
             }
-        }
-        Debug.Log("Saved!");
 
+            // ASSESSMENT 4 ADDITION (22/03/2018)
+            // Save active cards and their state
+            List<Card> activeCards = game.cardDeck.GetActiveCards();
+
+            foreach (Card activeCard in activeCards)
+            {
+                print(activeCard.GetType().Name);
+            }
+
+            writer.WriteLine("activeCards:" + activeCards.Count);
+
+            foreach (Card activeCard in activeCards)
+            {
+                switch (activeCard.GetType().Name)
+                {
+                    case "FreshersFluCard":
+                        writer.WriteLine("FreshersFluCard:" + activeCard.GetOwner().name + ":" + activeCard.GetTurnCount());
+
+                        FreshersFluCard card = (FreshersFluCard)activeCard;
+                        Dictionary<Player, int[]> playerPvcBonuses = card.GetPvcBonuses();
+
+                        foreach(KeyValuePair<Player, int[]> entry in playerPvcBonuses)
+                        {
+                            writer.WriteLine(entry.Key.name + ":" + entry.Value[0] + ":" + entry.Value[1]);
+                        }
+
+                        break;
+                }
+            }
+            //------------------------------------
+        }
+
+        Debug.Log("Saved!");
     }
 
     public void Load()
@@ -115,83 +170,62 @@ public class GameControl : MonoBehaviour
             //restore current player
             if (line[0] == "Current Player")
             {
-                if (line[1] == "Player1")
-                {
-                    DeactiveCurrentPlayer();
-                    //load in player saved
-                    game.currentPlayer = GameObject.Find("Player1").GetComponent<Player>();
-                    game.currentPlayer.SetActive(true);
-                    game.currentPlayer.GetGui().Activate();
-                }
-                else if (line[1] == "Player2")
-                {
-                    DeactiveCurrentPlayer();
-                    //load in player saved
-                    game.currentPlayer = GameObject.Find("Player2").GetComponent<Player>();
-                    game.currentPlayer.SetActive(true);
-                    game.currentPlayer.GetGui().Activate();
-                }
-                else if (line[1] == "Player3")
-                {
-                    DeactiveCurrentPlayer();
-                    //load in player saved
-                    game.currentPlayer = GameObject.Find("Player3").GetComponent<Player>();
-                    game.currentPlayer.SetActive(true);
-                    game.currentPlayer.GetGui().Activate();
-                }
-                else if (line[1] == "Player4")
-                {
-                    DeactiveCurrentPlayer();
-                    //load in player saved
-                    game.currentPlayer = GameObject.Find("Player4").GetComponent<Player>();
-                    game.currentPlayer.SetActive(true);
-                    game.currentPlayer.GetGui().Activate();
-                }
+                DeactiveCurrentPlayer();
+                //load in player saved
+                game.currentPlayer = GameObject.Find(line[1]).GetComponent<Player>();
+                game.currentPlayer.SetActive(true);
+                game.currentPlayer.GetGui().Activate();
             }
 
-            //restore movestate
+            //restore move state
             line = reader.ReadLine().Split(':');
 
             if (line[0] == "Turn state")
             {
-                if (line[1] == "Move1")
+                switch(line[1])
                 {
-                    game.SetTurnState(Game.TurnState.Move1);
-                }
-                else if (line[1] == "Move2")
-                {
-                    game.SetTurnState(Game.TurnState.Move2);
-                }
-                else if (line[1] == "EndOfTurn")
-                {
-                    game.SetTurnState(Game.TurnState.EndOfTurn);
-                }
-                else if (line[1] == "NULL")
-                {
-                    game.SetTurnState(Game.TurnState.NULL);
+                    case "Move1":
+                        game.SetTurnState(Game.TurnState.Move1);
+                        break;
+                    case "Move2":
+                        game.SetTurnState(Game.TurnState.Move2);
+                        break;
+                    case "EndOfTurn":
+                        game.SetTurnState(Game.TurnState.EndOfTurn);
+                        break;
+                    case "NULL":
+                        game.SetTurnState(Game.TurnState.NULL);
+                        break;
                 }
             }
 
-            //restore player1
-            game.players[0].SetBeer( int.Parse(reader.ReadLine().Split(':')[1]) );
-            game.players[0].SetKnowledge(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[0].SetHuman(bool.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[0].SetActive(bool.Parse(reader.ReadLine().Split(':')[1]));
-            //restore player2
-            game.players[1].SetBeer(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[1].SetKnowledge(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[1].SetHuman(bool.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[1].SetActive(bool.Parse(reader.ReadLine().Split(':')[1]));
-            //restore player3
-            game.players[2].SetBeer(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[2].SetKnowledge(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[2].SetHuman(bool.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[2].SetActive(bool.Parse(reader.ReadLine().Split(':')[1]));
-            //restore player4
-            game.players[3].SetBeer(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[3].SetKnowledge(int.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[3].SetHuman(bool.Parse(reader.ReadLine().Split(':')[1]));
-            game.players[3].SetActive(bool.Parse(reader.ReadLine().Split(':')[1]));
+            // ASSESSMENT 4 ADDITION (22/03/2018)
+            // restore players
+            for(int i = 0; i < 4; i++)
+            {
+                game.players[i].SetBeer(int.Parse(reader.ReadLine().Split(':')[1].ToString()));
+                game.players[i].SetKnowledge(int.Parse(reader.ReadLine().Split(':')[1].ToString()));
+                game.players[i].SetHuman(bool.Parse(reader.ReadLine().Split(':')[1]));
+                game.players[i].SetActive(bool.Parse(reader.ReadLine().Split(':')[1]));
+
+                string[] cards = reader.ReadLine().Split(':')[1].Split(',');
+
+                foreach(string card in cards)
+                {
+                    switch(card)
+                    {
+                        case "FreshersFluCard":
+                            Card freshersFluCard = new FreshersFluCard(game.players[i]);
+                            game.players[i].AddPunishmentCard(freshersFluCard);
+                            break;
+                        case "NothingCard":
+                            Card nothingCard = new NothingCard(game.players[i]);
+                            game.players[i].AddPunishmentCard(nothingCard);
+                            break;
+                    }
+                }
+            }
+            //-----------------------------------
 
             //sectors
             Sector[] sectors = map.GetComponentsInChildren<Sector>();
@@ -200,32 +234,16 @@ public class GameControl : MonoBehaviour
             {
                 string sectorName = reader.ReadLine().Split(':')[0];
 
-                Debug.Log(sectorName);
-
                 //set sector owner
                 line = reader.ReadLine().Split(':');
 
                 string playerName = line[1];
+                int playerID = GetPlayerIDByName(playerName);
 
-                if (playerName == "Player1")
+                if (playerID != -1)
                 {
-                    sectors[i].SetOwner(game.players[0]);
-                    game.players[0].ownedSectors.Add(sectors[i]);
-                }
-                else if (playerName == "Player2")
-                {
-                    sectors[i].SetOwner(game.players[1]);
-                    game.players[1].ownedSectors.Add(sectors[i]);
-                }
-                else if (playerName == "Player3")
-                {
-                    sectors[i].SetOwner(game.players[2]);
-                    game.players[2].ownedSectors.Add(sectors[i]);
-                }
-                else if (playerName == "Player4")
-                {
-                    sectors[i].SetOwner(game.players[3]);
-                    game.players[3].ownedSectors.Add(sectors[i]);
+                    sectors[i].SetOwner(game.players[playerID]);
+                    game.players[playerID].ownedSectors.Add(sectors[i]);
                 }
                 else
                 {
@@ -241,99 +259,101 @@ public class GameControl : MonoBehaviour
                 }
                 else if (line[1] != "null")
                 {
-                    if (playerName == "Player1")
-                    {
-                        game.players[0].Capture(sectors[i]);
-                    }
-                    else if (playerName == "Player2")
-                    {
-                        game.players[1].Capture(sectors[i]);
-                    }
-                    else if (playerName == "Player3")
-                    {
-                        game.players[2].Capture(sectors[i]);
-                    }
-                    else if (playerName == "Player4")
-                    {
-                        game.players[3].Capture(sectors[i]);
-                    }
+                    game.players[playerID].Capture(sectors[i]);
                 }
 
-                //spawn units (if present
+                //spawn units (if present)
                 //line = reader.ReadLine().Split();
                 string aay = reader.ReadLine();
-
-
                 line = aay.Split(':');
-
-                if (line[0] != "null") //if there is a unit to place
+                
+                if (line[1] != "null") //if there is a unit to place
                 {
-                    if (line[1] == "Player1")
-                    {
-                        // instantiate a new unit at the sector
-                        Unit newUnit = Instantiate(player1UnitPrefab).GetComponent<Unit>();
+                    GameObject[] playerPrefabs = new GameObject[] {
+                        player1UnitPrefab, player2UnitPrefab, player3UnitPrefab, player4UnitPrefab
+                    };
 
-                        // initialize the new unit
-                        newUnit.Initialize(game.players[0], sectors[i]);
+                    // instantiate a new unit at the sector
+                    Unit newUnit = Instantiate(playerPrefabs[playerID]).GetComponent<Unit>();
 
-                        // add the new unit to the player's list of units and 
-                        // the sector's unit parameters
-                        game.players[0].units.Add(newUnit);
-                        //sectors[i].SetUnit(newUnit);
+                    // initialize the new unit
+                    newUnit.Initialize(game.players[playerID], sectors[i]);
 
-                        newUnit.SetLevel( int.Parse(line[2]) );
-                    }
-                    if (line[1] == "Player2")
-                    {
-                        // instantiate a new unit at the sector
-                        Unit newUnit = Instantiate(player2UnitPrefab).GetComponent<Unit>();
+                    // add the new unit to the player's list of units and 
+                    // the sector's unit parameters
+                    game.players[playerID].units.Add(newUnit);
+                    //sectors[i].SetUnit(newUnit);
 
-                        // initialize the new unit
-                        newUnit.Initialize(game.players[1], sectors[i]);
+                    newUnit.SetLevel(int.Parse(line[2]));
 
-                        // add the new unit to the player's list of units and 
-                        // the sector's unit parameters
-                        game.players[1].units.Add(newUnit);
-                        //sectors[i].SetUnit(newUnit);
-
-                        newUnit.SetLevel(int.Parse(line[2]));
-                    }
-                    if (line[1] == "Player3")
-                    {
-                        // instantiate a new unit at the sector
-                        Unit newUnit = Instantiate(player3UnitPrefab).GetComponent<Unit>();
-
-                        // initialize the new unit
-                        newUnit.Initialize(game.players[2], sectors[i]);
-
-                        // add the new unit to the player's list of units and 
-                        // the sector's unit parameters
-                        game.players[2].units.Add(newUnit);
-                        //sectors[i].SetUnit(newUnit);
-
-                        newUnit.SetLevel(int.Parse(line[2]));
-                    }
-                    if (line[1] == "Player4")
-                    {
-                        // instantiate a new unit at the sector
-                        Unit newUnit = Instantiate(player4UnitPrefab).GetComponent<Unit>();
-
-                        // initialize the new unit
-                        newUnit.Initialize(game.players[3], sectors[i]);
-
-                        // add the new unit to the player's list of units and 
-                        // the sector's unit parameters
-                        game.players[3].units.Add(newUnit);
-                        sectors[i].SetUnit(newUnit);
-
-                        newUnit.SetLevel(int.Parse(line[2]));
-                    }
+                    //ASSESSMENT 4 ADDITION (22/03/2018)
+                    Color unitColor = new Color(
+                            float.Parse(line[3]),
+                            float.Parse(line[4]),
+                            float.Parse(line[5])
+                        );
+                    newUnit.SetColor(unitColor);
+                    newUnit.gameObject.GetComponent<Renderer>().material.color = unitColor;
+                    //----------------------------------
                 }
             }
 
+            // ASSESSMENT 4 ADDITION (22/03/2018)
+            // Reset active cards and their states
+            line = reader.ReadLine().Split(':');
+
+            if(line[0] == "activeCards")
+            {
+                for(int i = 0; i < int.Parse(line[1]); i++)
+                {
+                    string[] card = reader.ReadLine().Split(':');
+
+                    switch(card[0])
+                    {
+                        case "FreshersFluCard":
+                            int playerID = GetPlayerIDByName(card[1]);
+                            int turnCount = int.Parse(card[2]);
+                            FreshersFluCard freshersFluCard = new FreshersFluCard(game.players[playerID], turnCount);
+
+                            Dictionary<Player, int[]> bonuses = new Dictionary<Player, int[]>();
+
+                            for(int j = 0; j < 3; j++)
+                            {
+                                string[] playerLine = reader.ReadLine().Split(':');
+                                playerID = GetPlayerIDByName(playerLine[0]);
+                                bonuses.Add(game.players[playerID], new int[] {
+                                    int.Parse(playerLine[1]),
+                                    int.Parse(playerLine[2])
+                                });
+                            }
+
+                            freshersFluCard.SetPvcBonuses(bonuses);
+                            game.cardDeck.SetActiveCard(freshersFluCard);
+
+                            break;
+                    }
+                }
+            }
         }
 
         Debug.Log("Loaded!");
+    }
+
+    private int GetPlayerIDByName(string name)
+    {
+        switch (name)
+        {
+            case "Player1":
+                return 0;
+            case "Player2":
+                return 1;
+            case "Player3":
+                return 2;
+            case "Player4":
+                return 3;
+            default:
+                return -1;
+        }
     }
 
     public void DeactiveCurrentPlayer()
@@ -342,16 +362,3 @@ public class GameControl : MonoBehaviour
         game.currentPlayer.GetGui().Deactivate();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

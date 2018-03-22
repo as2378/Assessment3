@@ -10,6 +10,20 @@ public class FreshersFluCard : Card {
 		return;
 	}
 
+    public FreshersFluCard (Player owner, int turnCount) : base (owner, Resources.Load<Sprite>("cards/FreshersFlu"), turnCount) {
+        return;
+    }
+
+    public Dictionary<Player, int[]> GetPvcBonuses()
+    {
+        return playerPvcBonuses;
+    }
+
+    public void SetPvcBonuses(Dictionary<Player, int[]> bonuses)
+    {
+        playerPvcBonuses = new Dictionary<Player, int[]>(bonuses);
+    }
+
 	public override void activatePunishment(){
 		//This method is called when the card is activated. It first colours all enemy units green, then calculates the amount of PVC bonus
 		//earnt by each player. The enemy player's bonuses are then reset.
@@ -45,7 +59,7 @@ public class FreshersFluCard : Card {
 						{
 							bonuses [0] = bonuses [0] - landmark.GetAmount ();
 						} 
-						else if (landmark.GetResourceType () == Landmark.ResourceType.Knowledge) 
+						else if (landmark.GetResourceType () == Landmark.ResourceType.Knowledge)
 						{
 							bonuses [1] = bonuses [1] - landmark.GetAmount ();
 						}

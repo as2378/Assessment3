@@ -247,8 +247,9 @@ public class Game : MonoBehaviour {
                 }
             }
         }
-		//ASSESSMENT4 ADDITION ------------------------------
-		cardDeck.DeactivatePunishmentCards (currentPlayer); //Deactivates punishment effect after one turn.
+        //ASSESSMENT4 ADDITION ------------------------------
+        // Check if any of the active cards need to be deactivated and deactivate them
+        cardDeck.DeactivatePunishmentCards (currentPlayer);
 		cardDeck.AssignPunishmentCard (currentPlayer);
 		//---------------------------------------------------
     }

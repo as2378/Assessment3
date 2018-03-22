@@ -19,7 +19,7 @@ public class CardDeck : MonoBehaviour {
 	{
 		//Returns a list containing the card slots.
 		return new List<GameObject>(cardSlots.Keys);
-	}
+    }
 
 	public List<Card> GetActiveCards()
 	{
@@ -106,9 +106,10 @@ public class CardDeck : MonoBehaviour {
 		Player currentPlayer = game.currentPlayer;
 		List<Card> cards = currentPlayer.GetPunishmentCards ();
 
-		//Assigns the player's cards to the card slots in the deck.
-		List<GameObject> slotList = new List<GameObject> (cardSlots.Keys);
-		for (int i = 0; i < slotList.Count; i++) 
+        //Assigns the player's cards to the card slots in the deck.
+        List<GameObject> slotList = GetCardSlots();
+
+        for (int i = 0; i < slotList.Count; i++) 
 		{
 			GameObject freeCardSlot = slotList [i];
 			//if the player has a card to put into the deck:
