@@ -14,13 +14,14 @@ public class Unit : MonoBehaviour {
     [SerializeField] private int level;
     [SerializeField] private Color color;
     [SerializeField] private bool selected = false;
+    [SerializeField] private bool postgrad = false;
 
-	[SerializeField] private Material level1Material;
+    [SerializeField] private Material level1Material;
 	[SerializeField] private Material level2Material;
 	[SerializeField] private Material level3Material;
 	[SerializeField] private Material level4Material;
 	[SerializeField] private Material level5Material;
-
+    
 
     public Player GetOwner() {
         return owner;
@@ -65,9 +66,10 @@ public class Unit : MonoBehaviour {
                 case 5:
                     this.gameObject.GetComponent<MeshRenderer>().material = level5Material;
                     break;
+                    this.postgrad = true;
                 default:
                     this.gameObject.GetComponent<MeshRenderer>().material = level1Material;
-                    break;
+                    break;                   
             }
 
             // set material color to match owner color
@@ -217,7 +219,8 @@ public class Unit : MonoBehaviour {
 				break;
 			case 5:
 				this.gameObject.GetComponent<MeshRenderer> ().material = level5Material;
-				break;
+                this.postgrad = true;
+                break;
 			default:
 				this.gameObject.GetComponent<MeshRenderer> ().material = level1Material;
 				break;
