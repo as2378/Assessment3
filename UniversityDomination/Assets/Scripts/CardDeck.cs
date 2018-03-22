@@ -46,7 +46,13 @@ public class CardDeck : MonoBehaviour {
 
 		int randInt = Random.Range (0, 100);
 
-		if (randInt < 50) 
+        if (randInt < 25)
+        {
+            Card lecturerStrikeCard = new LecturerStrikeCard(player);
+            player.AddPunishmentCard(lecturerStrikeCard);
+            return;
+        }
+        if (randInt < 50) 
 		{
 			Card nothingCard = new NothingCard (player);
 			player.AddPunishmentCard (nothingCard);
