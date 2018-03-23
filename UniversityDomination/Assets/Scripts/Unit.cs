@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour {
 	[SerializeField] private Material level3Material;
 	[SerializeField] private Material level4Material;
 	[SerializeField] private Material level5Material;
-    
+
 
     public Player GetOwner() {
         return owner;
@@ -69,7 +69,7 @@ public class Unit : MonoBehaviour {
 					break;
                 default:
                     this.gameObject.GetComponent<MeshRenderer>().material = level1Material;
-                    break;                   
+                    break;
             }
 
             // set material color to match owner color
@@ -99,7 +99,7 @@ public class Unit : MonoBehaviour {
 
     public void Initialize(Player player, Sector sector) {
 
-        // initialize the unit to be owned by the specified 
+        // initialize the unit to be owned by the specified
         // player and in the specified sector
 
 
@@ -109,11 +109,11 @@ public class Unit : MonoBehaviour {
 
 		//ASSESSMENT4 ADDITION- checks if FreshersFluCard is active. If so the unit is coloured green.
 		CardDeck cardDeck = player.GetGame().cardDeck;
-		if (cardDeck != null && cardDeck.HasActiveCardOfType (typeof(FreshersFluCard))) 
+		if (cardDeck != null && cardDeck.HasActiveCardOfType (typeof(FreshersFluCard)))
 		{
 			color = new Color (0.62f, 0.71f, 0.47f);
-		} 
-		else 
+		}
+		else
 		{
 			color = Color.white;
 		}
@@ -135,7 +135,7 @@ public class Unit : MonoBehaviour {
         if (this.sector != null)
         {
             this.sector.ClearUnit();
-        }   
+        }
 
         // set the unit's sector to the target sector
         // and the target sector's unit to the unit
@@ -151,7 +151,7 @@ public class Unit : MonoBehaviour {
         transform.position = targetTransform.position;
 
 
-        // if the target sector belonged to a different 
+        // if the target sector belonged to a different
         // player than the unit, capture it and level up
         if (targetSector.GetOwner() != this.owner)
         {
@@ -193,7 +193,7 @@ public class Unit : MonoBehaviour {
 
 		otherUnit.transform.SetParent(otherUnit.sector.transform.Find("Units").transform);
 		otherUnit.transform.position = otherUnit.sector.transform.Find("Units").position;
-        
+
     }
 
 	public void LevelUp() {
@@ -206,7 +206,7 @@ public class Unit : MonoBehaviour {
 			level++;
 
 			// change texture to reflect new level
-			switch (level) 
+			switch (level)
 			{
 			case 2:
 				this.gameObject.GetComponent<MeshRenderer> ().material = level2Material;
@@ -230,15 +230,41 @@ public class Unit : MonoBehaviour {
 			GetComponent<Renderer>().material.color = color;
 
 		}
-		
+
 	}
 
     public void Select() {
-
         // select the unit and highlight the sectors adjacent to it
 
         selected = true;
-        sector.ApplyHighlightAdjacent();
+
+        // ASSESSMENT 4 ADDITION (23/03/2018) ----------------------------
+        // If the unit is level-5, highlight all of the player's sectors,
+        // and the adjacent ones even if they're not owned by the player.
+        if(level == 5)
+        {
+            foreach(Sector ownedSector in owner.ownedSectors)
+            {
+                if(ownedSector.name != sector.name)
+                {
+                    ownedSector.ApplyHighlight(0.2f);
+                }
+            }
+
+            foreach(Sector sector_ in sector.GetAdjacentSectors())
+            {
+                if(sector_.GetOwner() != owner)
+                {
+                    sector_.ApplyHighlight(0.2f);
+                }
+            }
+        }
+        // Only highlight the adjacent ones
+        else
+        {
+            sector.ApplyHighlightAdjacent();
+        }
+        // ---------------------------------------------------------------
     }
 
     public void Deselect() {
@@ -258,5 +284,5 @@ public class Unit : MonoBehaviour {
         owner.units.Remove(this);
         Destroy(this.gameObject);
     }
-        
+
 }

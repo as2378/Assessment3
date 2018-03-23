@@ -64,7 +64,7 @@ public class Sector : MonoBehaviour {
 	public void SetLandmark(Landmark landmark) {
         this.landmark = landmark;
     }
-        
+
 	public void Initialize() {
 
         // initialize the sector by setting its owner and unit to null
@@ -118,7 +118,7 @@ public class Sector : MonoBehaviour {
     public void RevertHighlightAdjacent() {
 
         // unhighlight each sector adjacent to this one
-        
+
         foreach (Sector adjacentSector in adjacentSectors)
         {
             adjacentSector.RevertHighlight(0.2f);
@@ -138,7 +138,7 @@ public class Sector : MonoBehaviour {
 	 */
     void OnMouseUpAsButton () {
         // when this sector is clicked, determine the context and act accordingly
-		if (map.game.currentPlayer.IsHuman ()) 
+		if (map.game.currentPlayer.IsHuman ())
 		{
 			OnMouseUpAsButtonAccessible ();
 		}
@@ -151,7 +151,7 @@ public class Sector : MonoBehaviour {
 
     public void OnMouseUpAsButtonAccessible() {
 
-        // a method of OnMouseUpAsButton that is 
+        // a method of OnMouseUpAsButton that is
         // accessible to other objects for testing
 
         waitForABit();
@@ -167,7 +167,7 @@ public class Sector : MonoBehaviour {
         // if this sector's unit is already selected
         else if (unit != null && unit.IsSelected())
         {
-            // deselect this sector's unit           
+            // deselect this sector's unit
             unit.Deselect();
         }
 
@@ -199,10 +199,37 @@ public class Sector : MonoBehaviour {
                 MoveIntoHostileUnit(selectedUnit, this.unit);
             }
         }
+        // if the selected unit is level-5
+        else if(map.game.GetSelectedUnit() != null && map.game.GetSelectedUnit().GetLevel() == 5)
+        {
+            // get the selected unit
+            Unit selectedUnit = map.game.GetSelectedUnit();
+
+            //deselect the selected unit
+            selectedUnit.Deselect();
+
+            // if this sector is unoccupied
+            if (unit == null)
+            {
+                MoveIntoUnoccupiedSector(selectedUnit);
+            }
+
+            // if the sector is occupied by a friendly unit
+            else if (unit.GetOwner() == selectedUnit.GetOwner())
+            {
+                MoveIntoFriendlyUnit(selectedUnit);
+            }
+
+            // if the sector is occupied by a hostile unit
+            else if (unit.GetOwner() != selectedUnit.GetOwner())
+            {
+                MoveIntoHostileUnit(selectedUnit, this.unit);
+            }
+        }
     }
 
     public void MoveIntoUnoccupiedSector(Unit unit) {
-        
+
         // move the selected unit into this sector
         unit.MoveTo(this);
 
@@ -244,7 +271,7 @@ public class Sector : MonoBehaviour {
         // end the turn
         map.game.EndTurn();
     }
-        
+
     public Unit AdjacentSelectedUnit() {
 
         // return the selected unit if it is adjacent to this sector
@@ -271,19 +298,19 @@ public class Sector : MonoBehaviour {
 
 
         /*
-         * Conflict resolution is done by comparing a random roll 
+         * Conflict resolution is done by comparing a random roll
          * from each unit involved. The roll is weighted based on
-         * the unit's level and the amount of the associated 
+         * the unit's level and the amount of the associated
          * resource the unit's owner has. Beer is associated with
          * attacking, and Knowledge is associated with defending.
-         * 
+         *
          * The formula is:
-         * 
+         *
          *     roll = [ a random integer with a lowerbound of 1
-         *              and an upperbound of 5 + the unit's level ] 
+         *              and an upperbound of 5 + the unit's level ]
          *           + [ the amount of the associated resource the
          *               unit's owner has ]
-         * 
+         *
          * In the event of a tie, the defending unit wins the conflict
          */
 
@@ -293,5 +320,5 @@ public class Sector : MonoBehaviour {
 
         return (attackingUnitRoll > defendingUnitRoll);
     }
-        
+
 }

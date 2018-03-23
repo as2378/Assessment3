@@ -15,13 +15,13 @@ public class Game : MonoBehaviour {
     public Player currentPlayer;
 	public CardDeck cardDeck;
 
- 
+
     public GameObject viceChancellorGameObj;    //Set in editor, stores vice chance game object
     public GameObject winner;                   //Stores which player has won.
     public GameObject winnerScreen;             //Reference to the screen displayed on game end.
 
 
-    public enum TurnState { Move1, Move2, EndOfTurn, NULL };    
+    public enum TurnState { Move1, Move2, EndOfTurn, NULL };
     [SerializeField] private TurnState turnState;
     [SerializeField] private bool gameFinished = false;
     [SerializeField] private bool testMode = false;
@@ -49,7 +49,7 @@ public class Game : MonoBehaviour {
 	/*
 	 * ASSESSMENT4 ADDITION: added an (i < numberOfPlayers) if statement to ensure that the correct
 	 * number of players are human/non-human.
-	 */ 
+	 */
     public void CreatePlayers(int numberOfPlayers){
 
         // ensure that the specified number of players
@@ -57,7 +57,7 @@ public class Game : MonoBehaviour {
         if (numberOfPlayers < 2)
             numberOfPlayers = 2;
 
-        if (numberOfPlayers > 4) 
+        if (numberOfPlayers > 4)
             numberOfPlayers = 4;
 
         // mark the specified number of players as human and non-human
@@ -109,11 +109,11 @@ public class Game : MonoBehaviour {
         }
 
         // randomly allocate sectors to players
-        foreach (Player player in players) 
+        foreach (Player player in players)
 		{
 			bool playerAllocated = false;
             while (!playerAllocated) {
-                
+
 				// choose a landmarked sector at random
                 int randomIndex = Random.Range (0, landmarkedSectors.Length);
 
@@ -194,7 +194,7 @@ public class Game : MonoBehaviour {
     }
 
     public bool NoUnitSelected() {
-        
+
         // return true if no unit is selected, false otherwise
 
 
@@ -212,6 +212,24 @@ public class Game : MonoBehaviour {
 
         // otherwise, return true
         return true;
+    }
+
+    public Unit GetSelectedUnit()
+    {
+        // Returns the selected unit if there is one,
+        // null otherwise
+
+        foreach(Sector sector in gameMap.GetComponent<Map>().sectors)
+        {
+            Unit unit = sector.GetUnit();
+
+            if(unit != null && unit.IsSelected())
+            {
+                return sector.GetUnit();
+            }
+        }
+
+        return null;
     }
 
     public void NextPlayer() {
@@ -254,7 +272,7 @@ public class Game : MonoBehaviour {
 		//---------------------------------------------------
     }
 
-       
+
     public void NextTurnState() {
         // change the turn state to the next in the order,
         // or to initial turn state if turn is completed
@@ -263,21 +281,21 @@ public class Game : MonoBehaviour {
         {
 		case TurnState.Move1:
 				//ASSESSMENT4 ADDITION: if the lectureStike card is active, end the turn after move1.
-				if (cardDeck.GetActiveCards ().Count != 0) 
-				{	
-					foreach (Card activeCard in cardDeck.GetActiveCards()) 
+				if (cardDeck.GetActiveCards ().Count != 0)
+				{
+					foreach (Card activeCard in cardDeck.GetActiveCards())
 					{
-						if (activeCard.GetType () == typeof(LecturerStrikeCard) && activeCard.GetOwner () != currentPlayer) 
+						if (activeCard.GetType () == typeof(LecturerStrikeCard) && activeCard.GetOwner () != currentPlayer)
 						{
 							turnState = TurnState.EndOfTurn;
-						} 
-						else 
+						}
+						else
 						{
 							turnState = TurnState.Move2;
 						}
 					}
-				} 
-				else 
+				}
+				else
 				{
 					turnState = TurnState.Move2;
 				}
@@ -302,10 +320,10 @@ public class Game : MonoBehaviour {
         // end the current turn and make sure that none of the units are selected
         turnState = TurnState.EndOfTurn;
 
-		foreach (Player player in players) 
+		foreach (Player player in players)
 		{
 			//scan through each unit of each player
-			foreach (Unit unit in player.units) 
+			foreach (Unit unit in player.units)
 			{
 				// if a selected unit is found, deselect it.
 				if (unit.IsSelected () == true)
@@ -368,7 +386,7 @@ public class Game : MonoBehaviour {
 			players [i].GetGui ().UpdateDisplay ();
 		}
 	}
-        
+
     public void Initialize () {
         // initialize the game
         // create a specified number of human players
@@ -400,7 +418,7 @@ public class Game : MonoBehaviour {
         UpdateGUI();
 
 	}
-        
+
     void Update () {
         // at the end of each turn, check for a winner and end the game if
         // necessary; otherwise, start the next player's turn
