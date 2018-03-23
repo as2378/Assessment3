@@ -65,8 +65,8 @@ public class Unit : MonoBehaviour {
                     break;
                 case 5:
                     this.gameObject.GetComponent<MeshRenderer>().material = level5Material;
-                    break;
                     this.postgrad = true;
+					break;
                 default:
                     this.gameObject.GetComponent<MeshRenderer>().material = level1Material;
                     break;                   

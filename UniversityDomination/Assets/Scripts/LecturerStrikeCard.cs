@@ -17,9 +17,6 @@ public class LecturerStrikeCard : Card
     {
         //Calls for the end of the current players turn so they cannot continue with their go due to the 'strike'.
 
-        GetOwner().GetGame().EndTurn();
-        
-
         Debug.Log("Strike Activated!");
     }
 

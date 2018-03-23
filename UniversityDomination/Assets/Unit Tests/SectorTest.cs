@@ -409,6 +409,10 @@ public class SectorTest
 		pvc.AddComponent<MeshCollider> ();
 		pvc.name = "PVC";
 		game.viceChancellorGameObj = pvc;
+
+		CardDeck cardDeck = MonoBehaviour.Instantiate (Resources.Load<GameObject> ("PunishmentCardGUI")).GetComponent<CardDeck> ();
+		game.cardDeck = cardDeck;
+		cardDeck.game = game;
     }
 
     private void ResetSectors(Sector sectorA, Sector sectorB) {

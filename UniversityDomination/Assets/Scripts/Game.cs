@@ -261,8 +261,26 @@ public class Game : MonoBehaviour {
 
         switch (turnState)
         {
-            case TurnState.Move1:
-                turnState = TurnState.Move2;
+		case TurnState.Move1:
+				//ASSESSMENT4 ADDITION: if the lectureStike card is active, end the turn after move1.
+				if (cardDeck.GetActiveCards ().Count != 0) 
+				{	
+					foreach (Card activeCard in cardDeck.GetActiveCards()) 
+					{
+						if (activeCard.GetType () == typeof(LecturerStrikeCard) && activeCard.GetOwner () != currentPlayer) 
+						{
+							turnState = TurnState.EndOfTurn;
+						} 
+						else 
+						{
+							turnState = TurnState.Move2;
+						}
+					}
+				} 
+				else 
+				{
+					turnState = TurnState.Move2;
+				}
                 break;
 
             case TurnState.Move2:
@@ -384,24 +402,23 @@ public class Game : MonoBehaviour {
 	}
         
     void Update () {
-
         // at the end of each turn, check for a winner and end the game if
         // necessary; otherwise, start the next player's turn
 
-		
         // if the current turn has ended and test mode is not enabled
         if (turnState == TurnState.EndOfTurn && !testMode)
         {
-            
             // if there is no winner yet
             if (GetWinner() == null)
             {
+				//ASSESSMENT4 ADDITION:-------------------------------------
                 //skip other players turns due to killer hangover
-                if (cardDeck.HasActiveCardOfType(typeof(KillerHangoverCard)))
-                    cardDeck.DeactivatePunishmentCards(currentPlayer);
-                //start next player's turn
+				if (cardDeck.HasActiveCardOfType (typeof(KillerHangoverCard)))
+					cardDeck.DeactivatePunishmentCards (currentPlayer);
+				//start next player's turn
                 else
                     NextPlayer();
+				//----------------------------------------------------------
                 NextTurnState();
 
                 // skip eliminated players
@@ -418,7 +435,6 @@ public class Game : MonoBehaviour {
 	}
 
     public void UpdateAccessible () {
-
         // copy of Update that can be called by other objects (for testing)
 
         if (turnState == TurnState.EndOfTurn)

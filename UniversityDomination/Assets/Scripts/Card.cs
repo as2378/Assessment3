@@ -41,7 +41,7 @@ public abstract class Card {
 
 	public override string ToString()
 	{
-		return "Card: "+ this.GetType ().ToString () + " ownedBy: " + owner.name;
+		return "Card: "+ this.GetType ().ToString ();
 	}
 		
 	public abstract void activatePunishment();
