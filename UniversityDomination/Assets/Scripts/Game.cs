@@ -396,8 +396,12 @@ public class Game : MonoBehaviour {
             // if there is no winner yet
             if (GetWinner() == null)
             {
-                // start the next player's turn
-                NextPlayer();
+                //skip other players turns due to killer hangover
+                if (cardDeck.HasActiveCardOfType(typeof(KillerHangoverCard)))
+                    cardDeck.DeactivatePunishmentCards(currentPlayer);
+                //start next player's turn
+                else
+                    NextPlayer();
                 NextTurnState();
 
                 // skip eliminated players

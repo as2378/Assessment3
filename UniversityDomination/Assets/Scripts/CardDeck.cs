@@ -58,7 +58,13 @@ public class CardDeck : MonoBehaviour {
 			player.AddPunishmentCard (nothingCard);
 			return;
 		}
-		if (randInt < 100) 
+        if (randInt < 75)
+        {
+            Card killerHangoverCard = new KillerHangoverCard(player);
+            player.AddPunishmentCard(killerHangoverCard);
+            return;
+        }
+        if (randInt < 100) 
 		{
 			Card freshersFluCard = new FreshersFluCard (player);
 			player.AddPunishmentCard (freshersFluCard);
