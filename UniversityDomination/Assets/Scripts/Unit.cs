@@ -14,7 +14,6 @@ public class Unit : MonoBehaviour {
     [SerializeField] private int level;
     [SerializeField] private Color color;
     [SerializeField] private bool selected = false;
-    [SerializeField] private bool postgrad = false;
 
     [SerializeField] private Material level1Material;
 	[SerializeField] private Material level2Material;
@@ -65,7 +64,6 @@ public class Unit : MonoBehaviour {
                     break;
                 case 5:
                     this.gameObject.GetComponent<MeshRenderer>().material = level5Material;
-                    this.postgrad = true;
 					break;
                 default:
                     this.gameObject.GetComponent<MeshRenderer>().material = level1Material;
@@ -219,7 +217,6 @@ public class Unit : MonoBehaviour {
 				break;
 			case 5:
 				this.gameObject.GetComponent<MeshRenderer> ().material = level5Material;
-                this.postgrad = true;
                 break;
 			default:
 				this.gameObject.GetComponent<MeshRenderer> ().material = level1Material;
