@@ -10,7 +10,10 @@ public class LecturerStrikeCard : Card
 
     public LecturerStrikeCard(Player owner) : base(owner, Resources.Load<Sprite>("cards/Strike"), 3){
         return;
+    }
 
+    public LecturerStrikeCard(Player owner, int turnCount) : base (owner, Resources.Load<Sprite>("cards/Strike"), turnCount) {
+        return;
     }
 
     public override void activatePunishment()

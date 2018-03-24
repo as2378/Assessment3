@@ -127,21 +127,15 @@ public class GameControl : MonoBehaviour
             // ASSESSMENT 4 ADDITION (22/03/2018)
             // Save active cards and their state
             List<Card> activeCards = game.cardDeck.GetActiveCards();
-
-            foreach (Card activeCard in activeCards)
-            {
-                print(activeCard.GetType().Name);
-            }
-
             writer.WriteLine("activeCards:" + activeCards.Count);
 
             foreach (Card activeCard in activeCards)
             {
+                writer.WriteLine(activeCard.GetType().Name + ":" + activeCard.GetOwner().name + ":" + activeCard.GetTurnCount());
+
                 switch (activeCard.GetType().Name)
                 {
                     case "FreshersFluCard":
-                        writer.WriteLine("FreshersFluCard:" + activeCard.GetOwner().name + ":" + activeCard.GetTurnCount());
-
                         FreshersFluCard card = (FreshersFluCard)activeCard;
                         Dictionary<Player, int[]> playerPvcBonuses = card.GetPvcBonuses();
 
@@ -217,6 +211,14 @@ public class GameControl : MonoBehaviour
                         case "FreshersFluCard":
                             Card freshersFluCard = new FreshersFluCard(game.players[i]);
                             game.players[i].AddPunishmentCard(freshersFluCard);
+                            break;
+                        case "LecturerStrikeCard":
+                            Card lecturerStrikeCard = new LecturerStrikeCard(game.players[i]);
+                            game.players[i].AddPunishmentCard(lecturerStrikeCard);
+                            break;
+                        case "KillerHangoverCard":
+                            Card killerHangoverCard = new KillerHangoverCard(game.players[i]);
+                            game.players[i].AddPunishmentCard(killerHangoverCard);
                             break;
                         case "NothingCard":
                             Card nothingCard = new NothingCard(game.players[i]);
@@ -307,12 +309,12 @@ public class GameControl : MonoBehaviour
                 for(int i = 0; i < int.Parse(line[1]); i++)
                 {
                     string[] card = reader.ReadLine().Split(':');
+                    int playerID = GetPlayerIDByName(card[1]);
+                    int turnCount = int.Parse(card[2]);
 
-                    switch(card[0])
+                    switch (card[0])
                     {
                         case "FreshersFluCard":
-                            int playerID = GetPlayerIDByName(card[1]);
-                            int turnCount = int.Parse(card[2]);
                             FreshersFluCard freshersFluCard = new FreshersFluCard(game.players[playerID], turnCount);
 
                             Dictionary<Player, int[]> bonuses = new Dictionary<Player, int[]>();
@@ -330,6 +332,14 @@ public class GameControl : MonoBehaviour
                             freshersFluCard.SetPvcBonuses(bonuses);
                             game.cardDeck.SetActiveCard(freshersFluCard);
 
+                            break;
+                        case "LecturerStrikeCard":
+                            LecturerStrikeCard lecturerStrikeCard = new LecturerStrikeCard(game.players[playerID], turnCount);
+                            game.cardDeck.SetActiveCard(lecturerStrikeCard);
+                            break;
+                        case "KillerHangoverCard":
+                            KillerHangoverCard killerHangoverCard = new KillerHangoverCard(game.players[playerID], turnCount);
+                            game.cardDeck.SetActiveCard(killerHangoverCard);
                             break;
                     }
                 }

@@ -9,7 +9,12 @@ public class KillerHangoverCard : Card {
         return;
     }
 
-	public override void activatePunishment () {
+    public KillerHangoverCard(Player owner, int turnCount) : base(owner, Resources.Load<Sprite>("cards/KillerHangover"), turnCount)
+    {
+        return;
+    }
+
+    public override void activatePunishment () {
         //This method is called when the card is activated.
         Debug.Log("Killer Hangover activated");
     }
