@@ -269,7 +269,33 @@ public class Unit : MonoBehaviour {
         // deselect the unit and unhighlight the sectors adjacent to it
 
         selected = false;
-        sector.RevertHighlightAdjacent();
+
+        // ASSESSMENT 4 ADDITION (2018/03/24) ----------------
+        // If the unit is level-5, unhighlight all of the player's sectors
+        // and the adjacent ones. Otherwise, just the adjacent ones.
+        if (level == 5)
+        {
+            foreach (Sector ownedSector in owner.ownedSectors)
+            {
+                if (ownedSector.name != sector.name)
+                {
+                    ownedSector.RevertHighlight(0.2f);
+                }
+            }
+
+            foreach (Sector sector_ in sector.GetAdjacentSectors())
+            {
+                if (sector_.GetOwner() != owner)
+                {
+                    sector_.RevertHighlight(0.2f);
+                }
+            }
+        }
+        // Only highlight the adjacent ones
+        else
+        {
+            sector.RevertHighlightAdjacent();
+        }
     }
 
     public void DestroySelf() {
