@@ -144,17 +144,17 @@ public class Sector : MonoBehaviour {
 		}
     }
 
-    IEnumerator waitForABit()
-    {
-        yield return new WaitForSeconds(2);
-    }
+    //IEnumerator waitForABit()
+    //{
+    //    yield return new WaitForSeconds(2);
+    //}
 
     public void OnMouseUpAsButtonAccessible() {
 
         // a method of OnMouseUpAsButton that is
         // accessible to other objects for testing
 
-        waitForABit();
+        //waitForABit();
 
         // if this sector contains a unit and belongs to the
         // current active player, and if no unit is selected
@@ -202,29 +202,31 @@ public class Sector : MonoBehaviour {
         // if the selected unit is level-5
         else if(map.game.GetSelectedUnit() != null && map.game.GetSelectedUnit().GetLevel() == 5)
         {
-            // get the selected unit
-            Unit selectedUnit = map.game.GetSelectedUnit();
+			//Is there an adjacent unit, or is the selected sector owned by the current player?
+			Unit selectedUnit = map.game.GetSelectedUnit();
+			if (AdjacentSelectedUnit () != null || this.owner == selectedUnit.GetOwner()) {
+	            // get the selected unit
+	            //deselect the selected unit
+	            selectedUnit.Deselect();
 
-            //deselect the selected unit
-            selectedUnit.Deselect();
+	            // if this sector is unoccupied
+	            if (unit == null)
+	            {
+	                MoveIntoUnoccupiedSector(selectedUnit);
+	            }
 
-            // if this sector is unoccupied
-            if (unit == null)
-            {
-                MoveIntoUnoccupiedSector(selectedUnit);
-            }
+	            // if the sector is occupied by a friendly unit
+	            else if (unit.GetOwner() == selectedUnit.GetOwner())
+	            {
+	                MoveIntoFriendlyUnit(selectedUnit);
+	            }
 
-            // if the sector is occupied by a friendly unit
-            else if (unit.GetOwner() == selectedUnit.GetOwner())
-            {
-                MoveIntoFriendlyUnit(selectedUnit);
-            }
-
-            // if the sector is occupied by a hostile unit
-            else if (unit.GetOwner() != selectedUnit.GetOwner())
-            {
-                MoveIntoHostileUnit(selectedUnit, this.unit);
-            }
+	            // if the sector is occupied by a hostile unit
+	            else if (unit.GetOwner() != selectedUnit.GetOwner())
+	            {
+	                MoveIntoHostileUnit(selectedUnit, this.unit);
+	            }
+			}
         }
     }
 

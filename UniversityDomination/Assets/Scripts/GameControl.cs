@@ -336,6 +336,8 @@ public class GameControl : MonoBehaviour
                         case "LecturerStrikeCard":
                             LecturerStrikeCard lecturerStrikeCard = new LecturerStrikeCard(game.players[playerID], turnCount);
                             game.cardDeck.SetActiveCard(lecturerStrikeCard);
+							GameObject strikeScene = GameObject.Instantiate (Resources.Load<GameObject> ("strike_model/StrikePeople"));
+							strikeScene.name = "StrikePeople";
                             break;
                         case "KillerHangoverCard":
                             KillerHangoverCard killerHangoverCard = new KillerHangoverCard(game.players[playerID], turnCount);

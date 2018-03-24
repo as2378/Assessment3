@@ -281,21 +281,22 @@ public class Game : MonoBehaviour {
         {
 		case TurnState.Move1:
 				//ASSESSMENT4 ADDITION: if the lectureStike card is active, end the turn after move1.
-				if (cardDeck.GetActiveCards ().Count != 0)
-				{
-					foreach (Card activeCard in cardDeck.GetActiveCards())
+				bool foundCard = false;	
+				if (cardDeck.GetActiveCards ().Count != 0) 
+				{	
+					foreach (Card activeCard in cardDeck.GetActiveCards()) 
 					{
-						if (activeCard.GetType () == typeof(LecturerStrikeCard) && activeCard.GetOwner () != currentPlayer)
+						if (activeCard.GetType () == typeof(LecturerStrikeCard) && activeCard.GetOwner () != currentPlayer) 
 						{
-							turnState = TurnState.EndOfTurn;
-						}
-						else
-						{
-							turnState = TurnState.Move2;
-						}
+							foundCard = true;
+						} 
 					}
 				}
-				else
+				if (foundCard) 
+				{
+					turnState = TurnState.EndOfTurn;
+				} 
+				else 
 				{
 					turnState = TurnState.Move2;
 				}
