@@ -54,7 +54,8 @@ public class CardTest {
 		Card[] testCards = new Card[] {
 			new NothingCard (testPlayer),
 			new FreshersFluCard (testPlayer),
-			new LecturerStrikeCard (testPlayer)
+			new LecturerStrikeCard (testPlayer),
+			new KillerHangoverCard(testPlayer)
 		};
 
 		foreach (Card testCard in testCards) {

@@ -143,18 +143,10 @@ public class Sector : MonoBehaviour {
 			OnMouseUpAsButtonAccessible ();
 		}
     }
-
-    //IEnumerator waitForABit()
-    //{
-    //    yield return new WaitForSeconds(2);
-    //}
-
+		
     public void OnMouseUpAsButtonAccessible() {
-
         // a method of OnMouseUpAsButton that is
         // accessible to other objects for testing
-
-        //waitForABit();
 
         // if this sector contains a unit and belongs to the
         // current active player, and if no unit is selected

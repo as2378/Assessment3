@@ -81,6 +81,7 @@ public class UnitTest
         yield return null;
     }
 
+	[UnityTest]
     public IEnumerator MoveToHostile_UnitInCorrectSectorAndLevelUp() {
         
         Setup();
@@ -207,7 +208,6 @@ public class UnitTest
 
         yield return null;
     }
-
         
     private void Setup() {
         

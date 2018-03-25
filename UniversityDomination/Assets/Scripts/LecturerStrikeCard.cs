@@ -15,8 +15,9 @@ public class LecturerStrikeCard : Card
 
     public override void activatePunishment()
     {
-        //Calls for the end of the current players turn so they cannot continue with their go due to the 'strike'.
+        //When this card is active, enemy players will only be able to move once per turn.
 
+		//Load in the strike scene and place it into the game.
 		GameObject strikeScene = GameObject.Instantiate (Resources.Load<GameObject> ("strike_model/StrikePeople"));
 		strikeScene.name = "StrikePeople";
 
@@ -26,6 +27,7 @@ public class LecturerStrikeCard : Card
 	public override void deactivatePunishment() {
 		Debug.Log("Strike deactivated");
 
+		//Remove the strike scene from the game.
 		GameObject strikeScene = GameObject.Find ("StrikePeople");
 		if (strikeScene != null) 
 		{

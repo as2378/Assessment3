@@ -420,62 +420,48 @@ public class Game : MonoBehaviour {
 
 	}
 
+	/*
+	 * ASSESSMENT4 ADDITION:
+	 * Removed duplication in Update and UpdateAccessible.
+	 */
     void Update () {
         // at the end of each turn, check for a winner and end the game if
         // necessary; otherwise, start the next player's turn
 
-        // if the current turn has ended and test mode is not enabled
-        if (turnState == TurnState.EndOfTurn && !testMode)
-        {
-            // if there is no winner yet
-            if (GetWinner() == null)
-            {
-				//ASSESSMENT4 ADDITION:-------------------------------------
-                //skip other players turns due to killer hangover
-				if (cardDeck.HasActiveCardOfType (typeof(KillerHangoverCard)))
-					cardDeck.DeactivatePunishmentCards (currentPlayer);
-				//start next player's turn
-                else
-                    NextPlayer();
-				//----------------------------------------------------------
-                NextTurnState();
-
-                // skip eliminated players
-                while (currentPlayer.IsEliminated())
-                    NextPlayer();
-
-                // spawn units for the next player
-                currentPlayer.SpawnUnits();
-            }
-            else
-                if (!gameFinished)
-                    EndGame();
-        }
+		if (!testMode) 
+		{
+			UpdateAccessible ();
+		}
 	}
 
     public void UpdateAccessible () {
-        // copy of Update that can be called by other objects (for testing)
+		// if the current turn has ended 
+		if (turnState == TurnState.EndOfTurn)
+		{
+			// if there is no winner yet
+			if (GetWinner() == null)
+			{
+				//ASSESSMENT4 ADDITION:-------------------------------------
+				//skip other players turns due to killer hangover
+				if (cardDeck.HasActiveCardOfType (typeof(KillerHangoverCard)))
+					cardDeck.DeactivatePunishmentCards (currentPlayer);
+				//start next player's turn
+				else
+					NextPlayer();
+				//----------------------------------------------------------
+				NextTurnState();
 
-        if (turnState == TurnState.EndOfTurn)
-        {
-            // if there is no winner yet
-            if (GetWinner() == null)
-            {
-                // start the next player's turn
-                NextPlayer();
-                NextTurnState();
+				// skip eliminated players
+				while (currentPlayer.IsEliminated())
+					NextPlayer();
 
-                // skip eliminated players
-                while (currentPlayer.IsEliminated())
-                    NextPlayer();
-
-                // spawn units for the next player
-                currentPlayer.SpawnUnits();
-            }
-            else
-                if (!gameFinished)
-                    EndGame();
-        }
+				// spawn units for the next player
+				currentPlayer.SpawnUnits();
+			}
+			else
+				if (!gameFinished)
+					EndGame();
+		}
     }
 
 }

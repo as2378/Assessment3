@@ -2,6 +2,7 @@
 using UnityEngine.TestTools;
 using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SectorTest 
 {
@@ -336,6 +337,108 @@ public class SectorTest
 
         yield return null;
     }
+
+	/*
+	 * ASSESSMENT4 ADDITION:
+	 * Tests to ensure that the postgrad can move to an adjacent sector or to any sector owned by the player.
+	 */
+	[UnityTest]
+	public IEnumerator OnMouseUpAsButton_PostgradMovesToAdjacentSector(){
+		//Tests that postgrads can move to adjacent sectors, like other units can.
+		Setup ();
+
+		Sector sector1 = map.sectors [0];
+		Sector adjacentSector = sector1.GetAdjacentSectors () [0];
+		Player testPlayer = players [0];
+		Unit testUnit = MonoBehaviour.Instantiate(testPlayer.GetUnitPrefab()).GetComponent<Unit>();
+		testUnit.SetOwner (testPlayer);
+		testUnit.MoveTo (sector1);
+		testUnit.SetLevel (5); //Make testUnit a postgrad.
+
+		testUnit.SetSelected (true); //Select the unit.
+
+		adjacentSector.OnMouseUpAsButtonAccessible (); //Click the adjacent sector.
+
+		//Test that the postgrad has moved to adjacentSector.
+		Assert.AreSame (testUnit, adjacentSector.GetUnit ());
+		Assert.AreSame (testPlayer, adjacentSector.GetOwner ());
+		Assert.IsNull (sector1.GetUnit ());
+
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION:
+	 * Tests to ensure that the postgrad can move to an adjacent sector or to any sector owned by the player.
+	 */
+	[UnityTest]
+	public IEnumerator OnMouseUpAsButton_PostgradMovesToPlayerOwnedSector(){
+		//Tests that postgrads can move to any player-owned sectors.
+		Setup ();
+
+		Sector sector1 = map.sectors [0];
+		Sector sector2 = map.sectors [3]; //a sector that is not adjacent to sector1.
+
+		List<Sector> adjSectors = new List<Sector> (sector1.GetAdjacentSectors ());  
+		Assert.IsFalse (adjSectors.Contains (sector2));	//ensure sector2 is not adjacent to sector1.
+
+		Player testPlayer = players [0];
+		Unit testUnit = MonoBehaviour.Instantiate(testPlayer.GetUnitPrefab()).GetComponent<Unit>();
+		sector2.SetOwner (testPlayer);
+
+		testUnit.SetOwner (testPlayer);
+		testUnit.MoveTo (sector1);
+		testUnit.SetLevel (5); //Make testUnit a postgrad.
+
+		testUnit.SetSelected (true); //Select the unit.
+
+		sector2.OnMouseUpAsButtonAccessible (); //Click the other player-owned sector.
+
+		//Test that the postgrad has moved to sector2.
+		Assert.AreSame (testUnit, sector2.GetUnit ());
+		Assert.AreSame (testPlayer, sector2.GetOwner ());
+		Assert.IsNull (sector1.GetUnit ());
+
+		yield return null;
+	}
+
+	/*
+	 * ASSESSMENT4 ADDITION:
+	 * Tests to ensure that the postgrad can move to an adjacent sector or to any sector owned by the player.
+	 */
+	[UnityTest]
+	public IEnumerator OnMouseUpAsButton_PostgradCannotMoveToNonAdjacentEnemySector(){
+		//Tests that postgrads cannot move to non-adjacent sectors that are owned by enemy players.
+		Setup ();
+
+		Player testPlayer = players [0];
+		Player enemyPlayer = players [1];
+
+		Unit testUnit = MonoBehaviour.Instantiate(testPlayer.GetUnitPrefab()).GetComponent<Unit>();
+		testUnit.SetOwner (testPlayer);
+
+		Sector sector1 = map.sectors [0];
+		testUnit.MoveTo (sector1);
+		Sector sector2 = map.sectors [3]; //a sector that is not adjacent to sector1.
+		sector2.SetOwner (enemyPlayer);
+
+		List<Sector> adjSectors = new List<Sector> (sector1.GetAdjacentSectors ());  
+		Assert.IsFalse (adjSectors.Contains (sector2));	//ensure sector2 is not adjacent to sector1.
+
+		testUnit.SetLevel (5); //Make testUnit a postgrad.
+		testUnit.SetSelected (true); //Select the unit.
+
+		sector2.OnMouseUpAsButtonAccessible (); //Click the enemy-owned sector.
+
+		//Test that the postgrad has not moved to sector2.
+		Assert.AreSame (testUnit, sector1.GetUnit ());
+		Assert.AreSame (testPlayer, sector1.GetOwner ());
+		Assert.IsNull (sector2.GetUnit ());
+		Assert.AreSame (enemyPlayer, sector2.GetOwner ());
+
+		yield return null;
+	}
+
 
 	/*
 	 * ASSESSMENT4 ADDITION: added code which creates a PVC unit, places it within the scene and
