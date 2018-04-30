@@ -1,12 +1,15 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is used represent players, both human and AI, that are playing the game.
+ * It stores inportant information associated with each player, but also provides methods to handle capturing sectors, spawning units and AI movement.
+ */ 
 public class Player : MonoBehaviour {
 
 	public List <Sector> ownedSectors;

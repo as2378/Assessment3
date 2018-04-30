@@ -1,8 +1,17 @@
-﻿using System.Collections;
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * ASSESSMENT4 ADDITION
+ * This class is used to represent the Killer hangover punishment cards.
+ */
 public class KillerHangoverCard : Card {
 
     public KillerHangoverCard (Player owner) :base (owner, Resources.Load<Sprite>("cards/KillerHangover"), 2) {

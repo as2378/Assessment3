@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//ASSESSMENT4 ADDITIONS
+/*
+ * ASSESSMENT4 ADDITIONS
+ * This class is used to represent all types of punishment cards, and means that the rest of the software can see the different cards as a single type.
+ */
 public abstract class Card {
 	public Sprite cardImage; //Image of the card
 	private Player owner;	 //Card's owner

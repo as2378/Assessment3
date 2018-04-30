@@ -1,8 +1,16 @@
-﻿using System.Collections;
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * ASSESSMENT4 ADDITIONS:
+ * This class is used to represent the Freshers Flu punishment card. It removes enemy player bonuses when activated.
+ */
 public class FreshersFluCard : Card {
 	private Dictionary<Player,int[]> playerPvcBonuses = new Dictionary<Player, int[]> ();
 

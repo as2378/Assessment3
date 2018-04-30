@@ -1,12 +1,14 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is used to control the sectors within the map.
+ */ 
 public class Sector : MonoBehaviour {
 
     [SerializeField] private Map map;

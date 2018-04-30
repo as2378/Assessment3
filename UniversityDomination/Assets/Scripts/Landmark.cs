@@ -1,14 +1,15 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
+/*
+ * This class is used to represent the beer, knowledge and PVC landmarks. It is also used to handle the loading of the PVC minigame.
+ */
 public class Landmark : MonoBehaviour {
 
     public enum ResourceType {Beer, Knowledge ,ViceChancellor}; //used to represent whether this landmark is the vice chancellor

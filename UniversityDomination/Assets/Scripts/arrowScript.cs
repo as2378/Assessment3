@@ -1,7 +1,7 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+//This class is used to add a 'mouse-over' effect to the arrow buttons in the PVC minigame.
 public class arrowScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public void OnPointerEnter(PointerEventData eventData) //when hovering over arrow button, tint it's colour

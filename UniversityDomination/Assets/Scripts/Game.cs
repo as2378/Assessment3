@@ -1,13 +1,15 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * This class is used to initialise and control the game, for example, this class manages the turns and detects when the game has finished.
+ */
 public class Game : MonoBehaviour {
 
     public Player[] players;

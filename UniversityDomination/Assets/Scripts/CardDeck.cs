@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,7 +46,7 @@ public class CardDeck : MonoBehaviour {
 		
 	public void AssignPunishmentCard(Player player)
 	{
-		//gives the player a new punishment card.
+		//This method is used to give 'player' a new punishment card.
 
 		int randInt = Random.Range (0, 100);
 
@@ -75,6 +79,7 @@ public class CardDeck : MonoBehaviour {
 	public void DeactivatePunishmentCards(Player player)
 	{
 		//Deactivates all active cards that were played by the player if their turn count reaches 0.
+		//This method is used to detect when to deactivate any currently active punishments.
 
 		List<Card> cardsToDeactivate = new List<Card> ();
 		foreach (Card activeCard in activeCards) 

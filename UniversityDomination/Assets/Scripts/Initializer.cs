@@ -1,15 +1,15 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//===========code by charlie=======
 using UnityEngine.SceneManagement;
-//=================================
 
+/*
+ * This class is used to initialise the game when the scene is loaded.
+ */
 public class Initializer : MonoBehaviour {
 
     public Game game;
@@ -20,7 +20,4 @@ public class Initializer : MonoBehaviour {
 
         game.Initialize();
     }
-
-
-	
 }

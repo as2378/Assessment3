@@ -1,12 +1,14 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * This class is used to represent the gang member units. It mostly contains methods that move units between sectors.
+ */ 
 public class Unit : MonoBehaviour {
 
     [SerializeField] private Player owner;

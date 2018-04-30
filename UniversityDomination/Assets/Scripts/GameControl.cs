@@ -1,8 +1,7 @@
-﻿//======================================================
-//Website link with executable:
-//http://www-users.york.ac.uk/~ch1575/documentation
-//======================================================
-
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +9,9 @@ using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
+/*
+ * GameControl is used to handle the saving and loading of the game.
+ */
 public class GameControl : MonoBehaviour
 {
 
@@ -234,7 +236,7 @@ public class GameControl : MonoBehaviour
 
             for (int i = 0; i < 32; i ++)
             {
-                string sectorName = reader.ReadLine().Split(':')[0];
+				reader.ReadLine().Split(':');
 
                 //set sector owner
                 line = reader.ReadLine().Split(':');

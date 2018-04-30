@@ -1,8 +1,16 @@
-﻿using System.Collections;
+﻿//===========================================================================
+//Executable Link:
+//https://as2378.github.io/unlucky/files/Assessment4/UniversityDomination.zip
+//===========================================================================
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * ASSESSMENT4 ADDITION:
+ * This class is used to represent the strike punishment cards. When activated, enemy players can only move once per turn.
+ */
 public class LecturerStrikeCard : Card
 {
     public LecturerStrikeCard(Player owner) : base(owner, Resources.Load<Sprite>("cards/Strike"), 3){
